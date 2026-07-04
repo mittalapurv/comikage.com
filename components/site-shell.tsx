@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowRight, List, X } from "./icons";
 
 export const siteNav = [
@@ -9,7 +10,7 @@ export const siteNav = [
 ] as const;
 
 export function Logo() {
-  return <a href="/" className="flex items-center gap-3" aria-label="Comikage home"><span className="grid h-9 w-9 place-items-center rounded-[10px] bg-ink text-white"><span className="h-3.5 w-3.5 rotate-45 rounded-[3px] border-2 border-white" /></span><span className="text-sm font-bold tracking-[0.16em]">COMIKAGE</span></a>;
+  return <Link href="/" className="flex items-center gap-3" aria-label="Comikage home"><span className="grid h-9 w-9 place-items-center rounded-[10px] bg-ink text-white"><span className="h-3.5 w-3.5 rotate-45 rounded-[3px] border-2 border-white" /></span><span className="text-sm font-bold tracking-[0.16em]">COMIKAGE</span></Link>;
 }
 
 export function Header() {
