@@ -17,7 +17,7 @@ git pull --ff-only
 "${COMPOSE[@]}" up -d --no-deps app
 
 for attempt in {1..30}; do
-  if curl --fail --silent --show-error http://127.0.0.1:3010/api/health >/dev/null; then
+  if curl --fail --silent --show-error http://127.0.0.1:3010/health >/dev/null; then
     echo "Comikage deployment healthy."
     exit 0
   fi
