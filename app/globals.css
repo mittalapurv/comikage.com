@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { scroll-behavior: smooth; }
+body { background: #fafaf8; color: #16181d; }
+::selection { background: #dbeafe; color: #16181d; }
+
+@layer components {
+  .shell { @apply mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12; }
+  .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.18em] text-accent; }
+  .section-title { @apply mt-4 max-w-3xl text-3xl font-semibold leading-[1.12] tracking-[-0.035em] text-ink sm:text-4xl lg:text-[44px]; }
+  .body-copy { @apply text-base leading-7 text-muted sm:text-lg sm:leading-8; }
+  .card { @apply rounded-2xl border border-line bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-soft; }
+  .button-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2; }
+  .button-secondary { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-5 py-3.5 text-sm font-semibold text-ink transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2; }
+}
