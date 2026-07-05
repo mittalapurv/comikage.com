@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direction B — Bricolage (Warm Studio)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Newsreader:ital,opsz@1,6..72&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF7EE; --ink:#211E15; --mist:#75705F; --line:#E4DECC;
+    --moss:#57731A; --amber:#E8A020;
+    --disp:"Bricolage Grotesque", sans-serif;
+    --quote:"Newsreader", Georgia, serif;
+    --sans:"Figtree", -apple-system, sans-serif;
+  }
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  .shell{max-width:1240px;margin:0 auto;padding:0 48px}
+  .eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--moss);font-weight:600}
+
+  header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--cream) 90%,transparent);backdrop-filter:blur(14px);border-bottom:2px solid var(--ink)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:78px}
+  .logo{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+  .logo i{font-style:normal;color:var(--moss)}
+  nav.links{display:flex;gap:32px;align-items:center}
+  nav.links a{color:var(--mist);text-decoration:none;font-size:14.5px;font-weight:500}
+  nav.links a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:10px;background:var(--moss);color:#fff;padding:14px 24px;font:600 14.5px var(--sans);text-decoration:none;border:2px solid var(--moss);border-radius:999px;cursor:pointer;transition:.2s}
+  .btn:hover{background:var(--ink);border-color:var(--ink)}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--cream)}
+
+  .hero{position:relative;overflow:hidden;padding:80px 0 30px}
+  .hero .shell{display:grid;grid-template-columns:.92fr 1.08fr;gap:44px;align-items:center}
+  h1{font-family:var(--disp);font-weight:750;font-size:70px;line-height:1.0;letter-spacing:-.03em}
+  h1 mark{background:linear-gradient(120deg,transparent 8%,#F4D98A 8%,#F4D98A 92%,transparent 92%);color:inherit;padding:0 6px}
+  .hero p.lead{margin-top:26px;font-size:18px;line-height:1.7;color:var(--mist);max-width:32em}
+  .hero .cta{margin-top:34px;display:flex;gap:14px}
+
+  /* visual */
+  .visual{position:relative;height:600px}
+  .visual svg.wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .wire{fill:none;stroke:var(--mist);stroke-width:1.6;opacity:.55;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.4s ease forwards}
+  .wire.green{stroke:var(--moss);opacity:1;stroke-width:2.4;stroke-linecap:round}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .chaos{position:absolute;font-size:11px;color:var(--mist);animation:wobble 8s ease-in-out infinite}
+  .chaos.sticky{width:110px;padding:10px;background:#FFE9A8;box-shadow:0 8px 16px rgba(33,30,21,.14);transform:rotate(-6deg);font-size:12.5px;line-height:1.35;color:#5c5230;border-radius:2px}
+  .chaos.wa{width:150px;padding:9px 12px;background:#DFF5C6;border-radius:14px 14px 14px 3px;box-shadow:0 5px 12px rgba(33,30,21,.12)}
+  .chaos.sheet{width:140px;background:#fff;border:1px solid var(--line);font-size:10px;border-radius:4px;overflow:hidden}
+  .chaos.sheet div{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--line)}
+  .chaos.sheet span{padding:4px 6px;border-right:1px solid var(--line);white-space:nowrap;overflow:hidden}
+  .chaos.brief{width:150px;padding:10px;background:#fff;border:1px solid var(--line);font-size:12px;box-shadow:0 8px 16px rgba(33,30,21,.10);transform:rotate(5deg);border-radius:4px}
+  .chaos.brief s{color:var(--mist)}
+  @keyframes wobble{0%,100%{translate:0 0}50%{translate:0 -9px}}
+  .lens{position:absolute;width:126px;height:126px;translate:-50% -50%;border-radius:38px;rotate:45deg;border:2.5px solid var(--ink);display:grid;place-items:center;background:color-mix(in srgb,var(--cream) 70%,transparent);backdrop-filter:blur(3px);box-shadow:0 14px 30px rgba(87,115,26,.18)}
+  .lens b{rotate:-45deg;font-family:var(--disp);font-weight:800;font-size:14px;letter-spacing:.2em;color:var(--moss);text-indent:.2em}
+  .node{position:absolute;translate:-50% -50%;opacity:0;animation:pop .5s cubic-bezier(.34,1.56,.64,1) forwards;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px 16px;box-shadow:3px 3px 0 var(--ink)}
+  .node .t{font-family:var(--disp);font-weight:700;font-size:15px;white-space:nowrap}
+  .node .s{margin-top:2px;font-size:11px;color:var(--mist);white-space:nowrap}
+  .node.leaf{border-width:1.5px;box-shadow:2px 2px 0 var(--line);padding:7px 12px;border-color:var(--mist)}
+  .node.leaf .t{font-weight:600;font-size:12.5px;font-family:var(--sans)}
+  @keyframes pop{from{opacity:0;scale:.8}to{opacity:1;scale:1}}
+  @media (prefers-reduced-motion:reduce){.wire,.node{animation-duration:.01s}.chaos{animation:none}}
+
+  .specimen{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:#fff}
+  .specimen .shell{display:grid;grid-template-columns:1.3fr .7fr;gap:60px;padding-top:56px;padding-bottom:56px}
+  .specimen h3{font-family:var(--disp);font-weight:750;font-size:42px;line-height:1.06;letter-spacing:-.02em}
+  .specimen h3 q{font-family:var(--quote);font-style:italic;font-weight:400;quotes:none;color:var(--moss)}
+  .specimen .meta{font-size:13.5px;color:var(--mist);line-height:2}
+  .chips{display:flex;gap:10px;margin-top:18px}
+  .chip{width:44px;height:44px;border-radius:14px;border:2px solid var(--ink)}
+
+  .proof{padding:110px 0}
+  h2{font-family:var(--disp);font-weight:750;font-size:50px;line-height:1.04;letter-spacing:-.025em}
+  .proof .head{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;margin-bottom:64px}
+  .founder{display:grid;grid-template-columns:270px 1fr;gap:56px;align-items:center;padding:44px;background:#fff;border:2px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--amber)}
+  .photo{width:270px;height:300px;object-fit:cover;border-radius:16px;border:2px solid var(--ink)}
+  .photo-ph{width:270px;height:300px;border-radius:16px;border:2px dashed var(--mist);display:grid;place-items:center;color:var(--mist);font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+  .founder blockquote{font-family:var(--quote);font-style:italic;font-size:30px;line-height:1.35}
+  .founder .who{margin-top:18px;font-size:14.5px;color:var(--mist)}
+  .founder .who b{color:var(--ink)}
+  .case{display:grid;grid-template-columns:110px 1fr 1fr;gap:40px;padding:38px 0;border-bottom:2px dashed var(--line);align-items:baseline}
+  .case:first-of-type{margin-top:60px}
+  .case .no{font-family:var(--disp);font-weight:800;font-size:15px;color:var(--amber);text-transform:uppercase;letter-spacing:.08em}
+  .case h4{font-family:var(--disp);font-size:21px;font-weight:700;line-height:1.35}
+  .case h4 span{color:var(--moss)}
+  .case p{font-size:15px;color:var(--mist);line-height:1.7}
+
+  .clarity{background:var(--ink);color:var(--cream);padding:90px 0}
+  .clarity .eyebrow{color:var(--amber)}
+  .clarity h2{margin-top:14px}
+  .strip{display:flex;margin-top:64px;position:relative}
+  .strip::before{content:"";position:absolute;left:0;right:0;top:35px;height:2px;background:repeating-linear-gradient(90deg,var(--amber) 0 10px,transparent 10px 18px)}
+  .step{flex:1;position:relative;padding-top:70px}
+  .step i{position:absolute;top:8px;left:0;font-family:var(--disp);font-style:normal;font-weight:800;font-size:40px;line-height:1.3;color:var(--ink);background:var(--amber);width:54px;text-align:center;border-radius:12px}
+  .step b{display:block;font-family:var(--disp);font-size:15.5px}
+  .step span{display:block;margin-top:8px;font-size:12.5px;line-height:1.6;color:#B5AF9E;padding-right:22px}
+
+  .contact{padding:110px 0}
+  .contact .shell{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px}
+  form{background:#fff;border:2px solid var(--ink);border-radius:24px;padding:36px;box-shadow:6px 6px 0 var(--moss)}
+  .field{margin-bottom:20px}
+  .field label{display:block;font:600 13px var(--disp);letter-spacing:.06em;text-transform:uppercase;color:var(--mist);margin-bottom:8px}
+  .field input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;background:var(--cream);padding:14px 16px;font:15px var(--sans);color:var(--ink);outline:none}
+  .field :focus{border-color:var(--moss)}
+  .field textarea{resize:vertical;min-height:100px}
+  .note{margin-top:14px;font-size:12.5px;color:var(--mist)}
+  footer{border-top:2px solid var(--ink);padding:34px 0;font-size:13.5px;color:var(--mist)}
+  footer .shell{display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="shell nav">
+    <a class="logo" href="#">comi<i>kage</i>*</a>
+    <nav class="links">
+      <a href="#">Services</a><a href="#">Approach</a><a href="#">Packages</a><a href="#">About</a>
+      <a class="btn" href="#contact">Start a conversation</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="shell">
+    <div>
+      <p class="eyebrow">Business-first technology consultancy</p>
+      <h1 style="margin-top:20px">We untangle the business <mark>before</mark> we build the tech.</h1>
+      <p class="lead">Websites, business applications, and practical AI — grown from the way your company actually runs, not from a template.</p>
+      <div class="cta">
+        <a class="btn" href="#contact">Book a Discovery Session →</a>
+        <a class="btn ghost" href="#">See how we work</a>
+      </div>
+    </div>
+
+    <div class="visual" aria-label="Messy business inputs resolving through Comikage into an ordered plan">
+      <svg class="wires" viewBox="0 0 640 600" preserveAspectRatio="none" aria-hidden="true">
+        <path class="wire" style="animation-delay:.1s" d="M60 80 C 150 150, 120 250, 212 252"/>
+        <path class="wire" style="animation-delay:.25s" d="M40 290 C 130 290, 140 240, 212 260"/>
+        <path class="wire" style="animation-delay:.4s" d="M70 470 C 170 420, 130 310, 214 274"/>
+        <path class="wire" style="animation-delay:.55s" d="M150 550 C 220 470, 160 320, 218 284"/>
+        <path class="wire green" style="animation-delay:.9s" d="M304 264 C 384 264, 384 112, 456 112"/>
+        <path class="wire green" style="animation-delay:1.05s" d="M304 264 C 394 264, 394 292, 456 292"/>
+        <path class="wire green" style="animation-delay:1.2s" d="M304 264 C 384 264, 384 462, 456 462"/>
+        <path class="wire" style="animation-delay:1.5s" d="M520 112 C 560 112, 560 72, 590 72"/>
+        <path class="wire" style="animation-delay:1.6s" d="M520 112 C 560 112, 560 152, 590 152"/>
+        <path class="wire" style="animation-delay:1.7s" d="M524 292 C 564 292, 564 252, 594 252"/>
+        <path class="wire" style="animation-delay:1.8s" d="M524 292 C 564 292, 564 332, 594 332"/>
+        <path class="wire" style="animation-delay:1.9s" d="M520 462 C 560 462, 560 422, 590 422"/>
+        <path class="wire" style="animation-delay:2s" d="M520 462 C 560 462, 560 502, 590 502"/>
+      </svg>
+
+      <div class="chaos sticky" style="left:2%;top:5%">call vendor?? approvals stuck AGAIN</div>
+      <div class="chaos wa" style="left:0;top:41%;animation-delay:-3s">“bhai website kab tak? client asking”<br>✓✓ 11:42 pm</div>
+      <div class="chaos sheet" style="left:4%;top:69%;animation-delay:-6s">
+        <div><span>ORD-113</span><span>???</span><span>pend</span></div>
+        <div><span>ORD-114</span><span>#REF!</span><span>ok?</span></div>
+        <div><span>ORD-115</span><span>dup</span><span>—</span></div>
+      </div>
+      <div class="chaos brief" style="left:16%;top:85%;animation-delay:-1.5s"><s>homepage jaisa Apple</s> <s>5 pages?</s> need CRM also…</div>
+
+      <div class="lens" style="left:40.5%;top:44%"><b>CLARITY</b></div>
+
+      <div class="node" style="left:76%;top:18.5%;animation-delay:1s"><div class="t">Business Websites</div><div class="s">credibility · enquiries</div></div>
+      <div class="node leaf" style="left:95%;top:12%;animation-delay:1.55s"><div class="t">Positioning</div></div>
+      <div class="node leaf" style="left:95%;top:25.5%;animation-delay:1.65s"><div class="t">SEO & copy</div></div>
+
+      <div class="node" style="left:76%;top:48.5%;animation-delay:1.15s"><div class="t">Business Applications</div><div class="s">CRM · portals · workflows</div></div>
+      <div class="node leaf" style="left:96%;top:42%;animation-delay:1.75s"><div class="t">Dashboards</div></div>
+      <div class="node leaf" style="left:96%;top:55.5%;animation-delay:1.85s"><div class="t">Approvals</div></div>
+
+      <div class="node" style="left:76%;top:77%;animation-delay:1.3s"><div class="t">AI & Automation</div><div class="s">assistants · document flows</div></div>
+      <div class="node leaf" style="left:95%;top:70%;animation-delay:1.95s"><div class="t">Knowledge search</div></div>
+      <div class="node leaf" style="left:95%;top:83.5%;animation-delay:2.05s"><div class="t">Lead routing</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="specimen">
+  <div class="shell">
+    <div>
+      <p class="eyebrow">Direction B — “Bricolage” (warm studio)</p>
+      <h3 style="margin-top:16px">Bricolage Grotesque does the talking. <q>Newsreader murmurs the quotes.</q></h3>
+    </div>
+    <div>
+      <p class="meta">Cream #FBF7EE · Ink #211E15 · Moss #57731A · Amber #E8A020<br>
+      Display: Bricolage Grotesque 300–800 (variable)<br>
+      Quotes: Newsreader italic · Text/UI: Figtree<br>
+      Mood: crafted, optimistic, hand-built — a studio, not a SaaS.</p>
+      <div class="chips">
+        <span class="chip" style="background:#FBF7EE"></span>
+        <span class="chip" style="background:#211E15"></span>
+        <span class="chip" style="background:#57731A"></span>
+        <span class="chip" style="background:#E8A020"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <div class="shell">
+    <div class="head">
+      <p class="eyebrow">Proof, not decoration</p>
+      <h2>The work speaks in before-and-afters.</h2>
+    </div>
+
+    <div class="founder">
+      <img class="photo" src="/founder.jpg" alt="Apurv Mittal" onerror="this.outerHTML='<div class=&quot;photo-ph&quot;>Founder photo<br>(drop founder.jpg in /public)</div>'">
+      <div>
+        <blockquote>“The technology is only useful when it fits the way the business actually works.”</blockquote>
+        <p class="who"><b>Apurv Mittal</b> — Founder. Electronics engineer, M.S. Systems Engineering & Robotics, 15+ years running business operations across infrastructure and civil engineering. <span style="color:var(--moss)">[LinkedIn highlights to be added]</span></p>
+      </div>
+    </div>
+
+    <div class="case">
+      <span class="no">Case 01</span>
+      <h4>A contractor's approval chaos <span>→</span> a three-screen workflow tool</h4>
+      <p>[Placeholder] Approvals lived in phone calls and a shared Excel. We mapped the actual decision chain in one discovery week, then shipped a request → review → release flow. Approvals that took 4 days now clear in one.</p>
+    </div>
+    <div class="case">
+      <span class="no">Case 02</span>
+      <h4>A distributor's WhatsApp order pile <span>→</span> a structured order portal</h4>
+      <p>[Placeholder] Orders arrived as photos of handwritten lists. A lightweight portal with WhatsApp hand-off kept the habit but structured the data — zero missed orders in the first quarter.</p>
+    </div>
+    <div class="case">
+      <span class="no">Client</span>
+      <h4 style="font-family:var(--quote);font-style:italic;font-weight:400;font-size:25px">“They asked about my business for two weeks before writing a line of code. Nobody had done that before.”</h4>
+      <p>[Placeholder quote] — Managing Director, infrastructure services firm</p>
+    </div>
+  </div>
+</section>
+
+<section class="clarity">
+  <div class="shell">
+    <p class="eyebrow">Our signature method</p>
+    <h2>The CLARITY framework</h2>
+    <div class="strip">
+      <div class="step"><i>C</i><b>Context</b><span>Business model, goals, constraints.</span></div>
+      <div class="step"><i>L</i><b>Listen</b><span>Customers, stakeholders, decision-makers.</span></div>
+      <div class="step"><i>A</i><b>Analyse</b><span>Workflows, content needs, digital gaps.</span></div>
+      <div class="step"><i>R</i><b>Recommend</b><span>The right website, app, or automation.</span></div>
+      <div class="step"><i>I</i><b>Implement</b><span>Modern, AI-assisted delivery.</span></div>
+      <div class="step"><i>T</i><b>Test</b><span>Usability, performance, business fit.</span></div>
+      <div class="step"><i>Y</i><b>Yield</b><span>Support, improve, scale after launch.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="shell">
+    <div>
+      <p class="eyebrow">Start with clarity</p>
+      <h2>Tell us what you're trying to build.</h2>
+      <p style="margin-top:24px;color:var(--mist);font-size:17px;line-height:1.7">No mail client, no friction — this form reaches us directly, and we reply within one working day.</p>
+    </div>
+    <form onsubmit="event.preventDefault();this.querySelector('.btn').textContent='✓ Sent (mock)'">
+      <div class="field"><label>Name</label><input placeholder="Your name"></div>
+      <div class="field"><label>Email or phone</label><input placeholder="you@company.com"></div>
+      <div class="field"><label>You need</label>
+        <select><option>A business website</option><option>A business application</option><option>AI / automation</option><option>Not sure yet — help me clarify</option></select>
+      </div>
+      <div class="field"><label>The situation</label><textarea placeholder="What are you trying to build, and what's messy about it today?"></textarea></div>
+      <button class="btn" type="submit">Send → Book a Discovery Session</button>
+      <p class="note">Delivers to a29npvtltd@gmail.com via a server-side route (Resend/Nodemailer) — no mailto.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="shell"><span>comikage* — business-first websites, applications & AI systems</span><span>© 2026 Comikage</span></div>
+</footer>
+
+</body>
+</html>

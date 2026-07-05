@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comikage — Variant D3 · Seal + Launcher (Obsidian)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&family=Lexend:wght@300..800&family=Fraunces:opsz,wght@9..144,400..700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0C10;
+    --text:#F2F4F8;
+    --soft:#C9CDD6;           /* lowest-contrast gray permitted for text */
+    --lime:#C6F32F;
+    --violet:#8B7CF6;
+    --edge:rgba(255,255,255,.14);
+    --glass:rgba(22,23,30,.66);
+    --sans:"Lexend","Atkinson Hyperlegible Next","Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{margin:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100vh;background:var(--bg);color:var(--text);
+    font-family:var(--sans);font-weight:400;font-size:19px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* subtle glows — decoration only, kept away from text at any meaningful density */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(46% 34% at 78% 0%,rgba(139,124,246,.14),transparent 62%),
+      radial-gradient(38% 30% at 10% 100%,rgba(198,243,47,.07),transparent 60%);
+  }
+  ::selection{background:var(--lime);color:#0B0C10}
+
+  .shell{max-width:1560px;margin:0 auto;padding-inline:clamp(20px,4vw,56px);position:relative;z-index:1}
+
+  /* ---------- focus visibility (everything interactive) ---------- */
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid var(--lime);outline-offset:3px;border-radius:8px;
+  }
+  #q:focus{outline:none} /* the wrapper carries a strong focus ring instead */
+
+  /* ---------- floating glass nav pill ---------- */
+  .navwrap{position:fixed;top:18px;left:0;right:0;z-index:60;display:flex;justify-content:center;padding-inline:clamp(16px,3vw,32px)}
+  .pill{
+    display:flex;align-items:center;gap:clamp(18px,3vw,40px);
+    background:rgba(17,18,25,.74);border:1px solid var(--edge);border-radius:999px;
+    padding:10px 12px 10px 24px;
+    backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 18px 46px rgba(0,0,0,.55);
+    max-width:100%;
+  }
+  .logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
+  .logo .kanji{font-size:24px;line-height:1;color:var(--lime);font-weight:500}
+  .logo b{font-weight:800;letter-spacing:.12em;font-size:16px}
+  .navlinks{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
+  .navlinks a.link{color:var(--soft);text-decoration:none;font-size:16px;font-weight:500;padding:8px 4px;border-radius:8px}
+  .navlinks a.link:hover{color:var(--text)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    background:var(--lime);color:#0B0C10;border:none;cursor:pointer;text-decoration:none;
+    font:700 16px/1 var(--sans);padding:14px 22px;min-height:48px;border-radius:999px;
+    box-shadow:0 0 26px rgba(198,243,47,.22);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 0 34px rgba(198,243,47,.32)}
+  @media (max-width:760px){ .navlinks a.link{display:none} }
+
+  .eyebrow{font-size:15px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--lime)}
+
+  /* ---------- hero: 38 / 62 — copy left, mindmap right ---------- */
+  .hero{padding:clamp(124px,15vh,168px) 0 10px}
+  .hero .shell{display:grid;grid-template-columns:38fr 62fr;gap:clamp(32px,4vw,64px);align-items:center}
+  h1{
+    margin-top:18px;
+    font-weight:700;font-size:clamp(40px,4.2vw,58px);line-height:1.08;letter-spacing:-.018em;
+    text-wrap:balance;
+  }
+  .lead{margin-top:22px;font-size:23px;line-height:1.6;color:var(--soft);max-width:34ch}
+  .lead a{
+    color:var(--lime);font-weight:600;text-decoration:underline;
+    text-decoration-thickness:2px;text-underline-offset:4px;border-radius:6px;
+  }
+  .lead a:hover{text-decoration-thickness:3px}
+  .mission{
+    margin-top:28px;font-size:24px;line-height:1.6;color:var(--text);font-weight:400;
+    max-width:30em;letter-spacing:-.005em;
+    padding-left:20px;border-left:3px solid var(--lime);
+  }
+  .mission em{font-style:normal;color:var(--lime);font-weight:500}
+
+  /* ---------- the mindmap, Obsidian rebuild: seal = trunk, nothing overlaps ---------- */
+  /* Geometry (from the fixed light version): container is exactly 640px tall;
+     SVG viewBox is 1000x640 with preserveAspectRatio="none", so y-units map
+     1:1 to px. Label rows sit at y = 44 / 119 / 194 · 256 / 331 / 406 ·
+     468 / 543 / 618 — every pair of text blocks keeps ≥42px vertical
+     clearance at any container width. Twigs rise/fall vertically first, then
+     run horizontal, so lines never cross label text. */
+  .visual{position:relative;height:640px}
+  .visual svg.wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .wire{fill:none;stroke-dasharray:1300;stroke-dashoffset:1300;animation:draw 1.5s ease forwards}
+  .wire.tangle{stroke:#C9CDD6;stroke-width:1.5;opacity:.3}
+  .wire.branch{stroke:var(--lime);stroke-width:2.6;opacity:.95}
+  .wire.twig{stroke:var(--lime);stroke-width:1.8;opacity:.75}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  /* chaos artifacts (left) — desaturated glass versions of the originals */
+  .chaos{
+    position:absolute;font-size:14px;line-height:1.4;font-weight:500;
+    backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+    animation:wobble 9s ease-in-out infinite;
+  }
+  .chaos.sticky{
+    width:140px;padding:12px;rotate:-6deg;color:#EAE4B8;
+    background:rgba(64,60,38,.6);border:1px solid rgba(242,233,174,.28);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 10px 24px rgba(0,0,0,.5);
+  }
+  .chaos.wa{
+    width:154px;padding:10px 12px;border-radius:12px 12px 12px 2px;color:#D7EDC8;
+    background:rgba(38,58,34,.62);border:1px solid rgba(120,180,100,.3);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 10px 24px rgba(0,0,0,.5);
+  }
+  .chaos.wa .tick{display:block;margin-top:4px;color:#BCE3A8;font-size:14px}
+  .chaos.sheet{
+    width:176px;color:var(--soft);
+    background:rgba(22,23,30,.72);border:1px solid var(--edge);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 10px 24px rgba(0,0,0,.5);
+  }
+  .chaos.sheet div{display:grid;grid-template-columns:1.2fr 1fr .8fr;border-bottom:1px solid rgba(255,255,255,.12)}
+  .chaos.sheet div:last-child{border-bottom:none}
+  .chaos.sheet span{padding:4px 7px;border-right:1px solid rgba(255,255,255,.12);overflow:hidden;white-space:nowrap;font-size:14px}
+  .chaos.sheet span:last-child{border-right:none}
+  .chaos.sheet .err{color:#FFA396;font-weight:700}
+  @keyframes wobble{0%,100%{translate:0 0}50%{translate:0 -7px}}
+
+  /* the trunk: circular glass COMIKAGE brand seal */
+  .seal{
+    position:absolute;left:38%;top:51.7%;translate:-50% -50%;width:156px;height:156px;border-radius:50%;
+    background:rgba(22,23,30,.82);border:1px solid rgba(255,255,255,.22);
+    backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+    display:grid;place-content:center;justify-items:center;gap:7px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 24px 54px rgba(0,0,0,.6),0 0 44px rgba(198,243,47,.1);
+    opacity:0;animation:pop .5s .15s ease forwards;z-index:2;
+  }
+  .seal::before{content:"";position:absolute;inset:-13px;border-radius:50%;border:1.5px dashed rgba(198,243,47,.55);animation:spin 32s linear infinite}
+  .seal .kanji{font-size:46px;line-height:1;color:var(--lime);font-weight:500}
+  .seal .word{font-size:17px;font-weight:800;letter-spacing:.18em;text-indent:.18em;color:var(--text)}
+  @keyframes spin{to{rotate:360deg}}
+  @keyframes pop{from{opacity:0;scale:.93}to{opacity:1;scale:1}}
+
+  /* branch + leaf labels (right) — left-anchored so text grows away from wires */
+  .node{position:absolute;translate:0 -50%;opacity:0;animation:pop .45s ease forwards;white-space:nowrap}
+  .node .t{font-size:17px;font-weight:700;color:var(--text);border-bottom:3px solid var(--lime);padding-bottom:4px;display:inline-block}
+  .node .s{margin-top:6px;font-size:15px;font-weight:500;color:var(--soft)}
+  .leaf{
+    position:absolute;translate:0 -50%;opacity:0;animation:pop .45s ease forwards;white-space:nowrap;
+    font-size:15px;font-weight:600;color:var(--text);border-bottom:1.5px solid rgba(201,205,214,.35);padding-bottom:2px;
+  }
+
+  /* ---------- launcher dock: full-width glass band ---------- */
+  .dockband{padding:34px 0 24px}
+  .dock{
+    border-radius:32px;padding:clamp(24px,3vw,40px);
+    background:var(--glass);border:1px solid var(--edge);
+    backdrop-filter:blur(28px) saturate(1.5);-webkit-backdrop-filter:blur(28px) saturate(1.5);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 40px 90px rgba(0,0,0,.55);
+  }
+  .dockhead{display:flex;align-items:center;gap:clamp(20px,3vw,44px);flex-wrap:wrap}
+  .dockhead .titles{flex:0 1 auto;min-width:260px}
+  .dockhead h2{font-size:26px;font-weight:700;letter-spacing:-.01em}
+  .dockhead .sub{margin-top:6px;font-size:16px;color:var(--soft)}
+  .searchwrap{
+    flex:1 1 360px;max-width:640px;display:flex;align-items:center;gap:14px;
+    background:rgba(0,0,0,.34);border:1.5px solid var(--edge);border-radius:18px;padding:0 20px;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .searchwrap:focus-within{border-color:rgba(198,243,47,.7);box-shadow:0 0 0 4px rgba(198,243,47,.14)}
+  .searchwrap svg{flex:none;opacity:.75}
+  #q{flex:1;background:none;border:none;color:var(--text);font:500 20px var(--sans);padding:18px 0;min-width:0}
+  #q::placeholder{color:var(--soft);opacity:1}
+  .kbd{flex:none;font:700 14px var(--sans);color:var(--soft);border:1px solid var(--edge);border-radius:7px;padding:4px 9px}
+
+  .count{font-size:15px;font-weight:500;color:var(--soft);min-height:28px;margin-top:14px}
+  .count b{color:var(--lime);font-weight:700}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(142px,1fr));gap:8px;margin-top:6px}
+  .app{
+    appearance:none;border:none;background:none;color:var(--text);font-family:var(--sans);cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 8px 16px;border-radius:22px;
+    transition:background .18s, scale .18s, opacity .25s, display .25s allow-discrete;
+  }
+  .app:hover{background:rgba(255,255,255,.08)}
+  .app:focus-visible{outline:3px solid var(--lime);outline-offset:-3px;border-radius:22px}
+  .app:active{scale:.94}
+  .app .ico{
+    width:68px;height:68px;border-radius:20px;display:grid;place-items:center;font-size:30px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), inset 0 -8px 14px rgba(0,0,0,.22), 0 12px 24px rgba(0,0,0,.45);
+    transition:scale .18s cubic-bezier(.34,1.56,.64,1);
+  }
+  .app:hover .ico{scale:1.09}
+  .app .lbl{font-size:16px;font-weight:500;color:var(--text);text-align:center;line-height:1.35}
+  .app .lbl mark{background:none;color:var(--lime);border-bottom:2px solid var(--lime)}
+  .app[hidden]{display:none;opacity:0;scale:.7}
+  @starting-style{.app{opacity:0;scale:.7}}
+
+  .empty{display:none;text-align:center;padding:44px 0 32px;color:var(--soft);font-size:18px}
+  .empty b{color:var(--text);font-weight:700}
+  .empty button{
+    margin-top:16px;background:none;border:1.5px solid var(--edge);color:var(--text);
+    border-radius:12px;padding:11px 20px;min-height:48px;font:500 16px var(--sans);cursor:pointer;
+  }
+  .empty button:hover{border-color:var(--lime);color:var(--lime)}
+  .grid:has(.app:not([hidden])) + .empty{display:none}
+  .grid:not(:has(.app:not([hidden]))) + .empty{display:block}
+
+  /* ---------- modal: glass sheet, sized for tired eyes ---------- */
+  dialog{border:none;padding:0;background:none;max-width:min(760px,94vw);margin:auto}
+  dialog::backdrop{background:rgba(5,6,9,.6);backdrop-filter:blur(10px)}
+  .sheet{
+    position:relative;max-height:86vh;overflow-y:auto;
+    border-radius:28px;padding:clamp(30px,5vw,44px);
+    background:rgba(24,25,33,.92);border:1px solid var(--edge);
+    backdrop-filter:blur(30px) saturate(1.4);-webkit-backdrop-filter:blur(30px) saturate(1.4);
+    color:var(--text);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 50px 120px rgba(0,0,0,.6);
+  }
+  dialog[open]{animation:sheetIn .32s cubic-bezier(.34,1.4,.64,1)}
+  dialog[open]::backdrop{animation:fadeIn .25s ease}
+  @keyframes sheetIn{from{opacity:0;translate:0 22px;scale:.96}}
+  @keyframes fadeIn{from{opacity:0}}
+  .xclose{
+    position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:12px;
+    display:grid;place-items:center;background:none;border:1.5px solid var(--edge);
+    color:var(--soft);font:500 20px/1 var(--sans);cursor:pointer;
+  }
+  .xclose:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
+  .sheet header{display:flex;align-items:center;gap:18px;padding-right:56px}
+  .sheet .ico{
+    width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-size:30px;flex:none;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 22px rgba(0,0,0,.45);
+  }
+  .sheet h2{font-weight:700;font-size:30px;letter-spacing:-.01em;line-height:1.2}
+  .sheet .tag{margin-top:6px;font-size:17px;font-weight:500;color:var(--lime)}
+  .sheet .body{margin-top:24px;color:#E7EAF0;font-size:21px;line-height:1.75}
+  .sheet .body p+p{margin-top:16px}
+  .sheet footer{margin-top:30px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .close{
+    background:none;border:1.5px solid var(--edge);color:var(--soft);
+    border-radius:999px;padding:14px 22px;min-height:48px;font:500 16px var(--sans);cursor:pointer;
+  }
+  .close:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
+
+  /* ---------- contact block ---------- */
+  .contactband{padding:30px 0 26px}
+  .contactpanel{
+    border-radius:32px;padding:clamp(26px,3.4vw,44px);
+    background:var(--glass);border:1px solid var(--edge);
+    backdrop-filter:blur(28px) saturate(1.5);-webkit-backdrop-filter:blur(28px) saturate(1.5);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 30px 70px rgba(0,0,0,.45);
+    display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(28px,4vw,64px);align-items:start;
+  }
+  .contactpanel h2{font-size:clamp(28px,2.6vw,34px);font-weight:700;letter-spacing:-.015em;margin-top:14px;line-height:1.15}
+  .contactpanel .blurb{margin-top:16px;font-size:19px;line-height:1.65;color:var(--soft);max-width:38ch}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field label{font-size:16px;font-weight:500;color:var(--text)}
+  .field input,.field textarea{
+    background:rgba(0,0,0,.34);border:1.5px solid var(--edge);border-radius:14px;
+    color:var(--text);font:400 18px/1.5 var(--sans);padding:14px 16px;width:100%;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .field textarea{resize:vertical;min-height:120px}
+  .field input::placeholder,.field textarea::placeholder{color:var(--soft);opacity:.85}
+  .field input:focus,.field textarea:focus{
+    outline:none;border-color:rgba(198,243,47,.7);box-shadow:0 0 0 4px rgba(198,243,47,.14);
+  }
+  form.contact{display:grid;gap:18px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .formfoot{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .sent{font-size:16px;font-weight:500;color:var(--lime);min-height:24px}
+  .routenote{margin-top:6px;font-size:15px;color:var(--soft)}
+  .routenote b{color:var(--text);font-weight:600}
+
+  /* ---------- footer ---------- */
+  footer.site{border-top:1px solid var(--edge);margin-top:30px;padding:26px 0 30px}
+  footer.site .shell{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:15px;color:var(--soft)}
+  footer.site .kanji{color:var(--lime)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1140px){
+    .hero .shell{grid-template-columns:1fr}
+    .visual{margin-top:16px}
+    .contactpanel{grid-template-columns:1fr}
+  }
+  @media (max-width:720px){
+    .visual{display:none}
+    .frow{grid-template-columns:1fr}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto}
+    .wire{stroke-dashoffset:0}
+    .node,.leaf,.seal{opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<div class="navwrap">
+  <div class="pill">
+    <a class="logo" href="#top" aria-label="Comikage home">
+      <span class="kanji" aria-hidden="true">影</span><b>COMIKAGE</b>
+    </a>
+    <nav class="navlinks" aria-label="Primary">
+      <a class="link" href="#services">Services</a>
+      <a class="link" href="#contact">Contact</a>
+      <a class="btn" href="#contact" id="nav-cta">Start a conversation</a>
+    </nav>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ================= HERO : 38 / 62 — copy left, seal mindmap right ================= -->
+  <section class="hero">
+    <div class="shell">
+      <div>
+        <p class="eyebrow">Business-first technology consultancy</p>
+        <h1>What does your business need?</h1>
+        <p class="lead">Type it. We probably build it. If not, <a href="#contact">get in touch</a>.</p>
+        <p class="mission">Comikage turns <em>unclear requirements</em> — the WhatsApp threads, the spreadsheets, the half-written briefs — into websites, applications, and AI systems that fit the way your business actually works.</p>
+      </div>
+
+      <!-- chaos → COMIKAGE glass seal → three lime branches -->
+      <div class="visual" role="img" aria-label="Messy business inputs — a sticky note, a WhatsApp message, a broken spreadsheet — flow into the circular Comikage brand seal and emerge as three ordered lime branches: Business Websites, Business Applications, and AI &amp; Automation, each with two examples.">
+        <svg class="wires" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
+          <!-- tangled chaos threads into the seal -->
+          <path class="wire tangle" style="animation-delay:.1s"  d="M78 88  C 190 150, 210 260, 380 331" vector-effect="non-scaling-stroke"/>
+          <path class="wire tangle" style="animation-delay:.25s" d="M95 305 C 190 240, 250 390, 380 331" vector-effect="non-scaling-stroke"/>
+          <path class="wire tangle" style="animation-delay:.4s"  d="M105 520 C 230 470, 190 360, 380 331" vector-effect="non-scaling-stroke"/>
+          <path class="wire tangle" style="animation-delay:.55s" d="M90 130 C 250 320, 170 430, 380 331" vector-effect="non-scaling-stroke"/>
+          <!-- three clean branches out of the seal -->
+          <path class="wire branch" style="animation-delay:.85s" d="M380 331 C 470 331, 460 119, 545 119" vector-effect="non-scaling-stroke"/>
+          <path class="wire branch" style="animation-delay:1s"   d="M380 331 H 560" vector-effect="non-scaling-stroke"/>
+          <path class="wire branch" style="animation-delay:1.15s" d="M380 331 C 470 331, 460 543, 545 543" vector-effect="non-scaling-stroke"/>
+          <!-- twigs to leaves: rise/fall vertically first, so they never cross label text -->
+          <path class="wire twig" style="animation-delay:1.45s" d="M545 119 C 545 70, 590 44, 660 44 H 780" vector-effect="non-scaling-stroke"/>
+          <path class="wire twig" style="animation-delay:1.55s" d="M545 119 C 545 168, 590 194, 660 194 H 780" vector-effect="non-scaling-stroke"/>
+          <path class="wire twig" style="animation-delay:1.65s" d="M560 331 C 560 282, 610 256, 680 256 H 780" vector-effect="non-scaling-stroke"/>
+          <path class="wire twig" style="animation-delay:1.75s" d="M560 331 C 560 380, 610 406, 680 406 H 780" vector-effect="non-scaling-stroke"/>
+          <path class="wire twig" style="animation-delay:1.85s" d="M545 543 C 545 494, 590 468, 660 468 H 780" vector-effect="non-scaling-stroke"/>
+          <path class="wire twig" style="animation-delay:1.95s" d="M545 543 C 545 592, 590 618, 660 618 H 780" vector-effect="non-scaling-stroke"/>
+        </svg>
+
+        <!-- chaos artifacts (desaturated glass) -->
+        <div class="chaos sticky" style="left:1%;top:5%">call vendor?? approvals stuck AGAIN</div>
+        <div class="chaos wa" style="left:0;top:42%;animation-delay:-3s">"bhai website kab tak? client asking"<span class="tick">✓✓ 11:42 pm</span></div>
+        <div class="chaos sheet" style="left:2%;top:74%;animation-delay:-6s">
+          <div><span>ORD-113</span><span>???</span><span>pend</span></div>
+          <div><span>ORD-114</span><span class="err">#REF!</span><span>ok?</span></div>
+          <div><span>ORD-115</span><span>dup</span><span>—</span></div>
+        </div>
+
+        <!-- the trunk: circular glass brand seal -->
+        <div class="seal">
+          <span class="kanji" aria-hidden="true">影</span>
+          <span class="word">COMIKAGE</span>
+        </div>
+
+        <!-- branch labels (y maps 1:1 to px: 44 / 119 / 194 · 256 / 331 / 406 · 468 / 543 / 618) -->
+        <div class="node" style="left:56%;top:18.594%;animation-delay:1.05s"><span class="t">Business Websites</span><div class="s">credibility · enquiries</div></div>
+        <div class="leaf" style="left:79%;top:6.875%;animation-delay:1.5s">Positioning</div>
+        <div class="leaf" style="left:79%;top:30.313%;animation-delay:1.6s">SEO &amp; copy</div>
+
+        <div class="node" style="left:57.5%;top:51.719%;animation-delay:1.2s"><span class="t">Business Applications</span><div class="s">CRM · portals · workflows</div></div>
+        <div class="leaf" style="left:79%;top:40%;animation-delay:1.7s">Dashboards</div>
+        <div class="leaf" style="left:79%;top:63.438%;animation-delay:1.8s">Approvals</div>
+
+        <div class="node" style="left:56%;top:84.844%;animation-delay:1.35s"><span class="t">AI &amp; Automation</span><div class="s">assistants · document flows</div></div>
+        <div class="leaf" style="left:79%;top:73.125%;animation-delay:1.9s">Knowledge search</div>
+        <div class="leaf" style="left:79%;top:96.563%;animation-delay:2s">Lead routing</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LAUNCHER DOCK ================= -->
+  <section class="dockband shell" id="services" aria-label="Service launcher">
+    <div class="dock">
+      <div class="dockhead">
+        <div class="titles">
+          <h2>Search everything we do</h2>
+          <p class="sub">Type to filter — click any tile to see how we approach it.</p>
+        </div>
+        <div class="searchwrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
+          <input id="q" type="text" placeholder="Search services… try &ldquo;web&rdquo;, &ldquo;content&rdquo;, &ldquo;ai&rdquo;" autocomplete="off" spellcheck="false" aria-label="Search services">
+          <span class="kbd" aria-hidden="true">esc</span>
+        </div>
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+      <div class="grid" id="grid" role="list"></div>
+      <div class="empty">
+        <p><b>Nothing matches &ldquo;<span id="qecho"></span>&rdquo;.</b><br>But if a business needs it, we probably do it.</p>
+        <button id="reset" type="button">Clear search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="contactband shell" id="contact">
+    <div class="contactpanel">
+      <div>
+        <p class="eyebrow">Start a conversation</p>
+        <h2>Tell us what's slowing your business down.</h2>
+        <p class="blurb">A rough description is enough — a voice-note transcript, a screenshot of the spreadsheet, three sentences. We reply within one business day with how we'd approach it.</p>
+      </div>
+      <div>
+        <form class="contact" id="cform" novalidate>
+          <div class="frow">
+            <div class="field">
+              <label for="cname">Your name</label>
+              <input id="cname" name="name" type="text" placeholder="e.g. Rohan Sharma" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="cemail">Email or phone</label>
+              <input id="cemail" name="contact" type="text" placeholder="you@company.com / +91 …" autocomplete="email">
+            </div>
+          </div>
+          <div class="field">
+            <label for="cmsg">What do you need?</label>
+            <textarea id="cmsg" name="message" placeholder="In your own words — unclear is fine."></textarea>
+          </div>
+          <div class="formfoot">
+            <button class="btn" type="submit" id="csend">Send it over →</button>
+            <p class="sent" id="csent" aria-live="polite"></p>
+          </div>
+          <p class="routenote">Delivers to <b>a29npvtltd@gmail.com</b> via a server-side route — no mailto.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="shell">
+    <span><span class="kanji" aria-hidden="true">影</span> COMIKAGE — business-first websites, applications &amp; AI systems</span>
+    <span>© 2026 Comikage</span>
+  </div>
+</footer>
+
+<!-- ================= SERVICE MODAL ================= -->
+<dialog id="modal" aria-labelledby="m-title">
+  <article class="sheet">
+    <button class="xclose" id="m-x" type="button" aria-label="Close dialog">✕</button>
+    <header>
+      <span class="ico" id="m-ico" aria-hidden="true"></span>
+      <div>
+        <h2 id="m-title"></h2>
+        <p class="tag" id="m-tag"></p>
+      </div>
+    </header>
+    <div class="body" id="m-body"></div>
+    <footer>
+      <button class="btn" id="m-cta" type="button">Discuss this with us →</button>
+      <button class="close" id="m-close" type="button">Close</button>
+    </footer>
+  </article>
+</dialog>
+
+<script>
+const SERVICES = [
+  { id:"web-design", label:"Web Design", icon:"🎨", grad:"linear-gradient(135deg,#37B6FF,#1F6FEB)",
+    tag:"Design that positions, not decorates",
+    keywords:["website","ui","layout","landing","design"],
+    body:[
+      "We design around your customer's decision, not around trends. Every page answers: who is this for, what should they feel, and what should they do next.",
+      "You get a design system — type, colour, components — so the site stays coherent as it grows, instead of drifting page by page."
+    ]},
+  { id:"business-websites", label:"Business Websites", icon:"🌐", grad:"linear-gradient(135deg,#4ADE80,#15803D)",
+    tag:"Credibility that generates enquiries",
+    keywords:["site","company","corporate","landing","pages"],
+    body:[
+      "A professional website that communicates clearly, establishes credibility, and turns visitors into enquiries — built after we understand your business, not before.",
+      "Includes structure, messaging, responsive build, deployment, and the boring-but-critical details: analytics, SEO basics, business email."
+    ]},
+  { id:"seo", label:"SEO", icon:"🔍", grad:"linear-gradient(135deg,#FBBF24,#D97706)",
+    tag:"Be found for what you actually sell",
+    keywords:["search","google","ranking","traffic","keywords"],
+    body:[
+      "We start with the searches your customers actually make — in your city, in your industry, in their words — and structure your pages to answer them.",
+      "Technical hygiene (speed, sitemaps, metadata) plus content that earns rankings. No black-hat tricks, no vanity keyword reports."
+    ]},
+  { id:"content", label:"Content Creation", icon:"✍️", grad:"linear-gradient(135deg,#F472B6,#BE185D)",
+    tag:"Your business, expressed clearly",
+    keywords:["copy","writing","blog","messaging","words"],
+    body:[
+      "Most business owners know their business deeply but struggle to put it into words. That's the actual job: we sit with you, understand how you create value, and express it in language your customers recognise themselves in.",
+      "Service pages, founder stories, case studies, proposals — written from your business knowledge, shaped by us. You review, we refine."
+    ]},
+  { id:"graphics", label:"Website Graphics", icon:"🖼️", grad:"linear-gradient(135deg,#A78BFA,#6D28D9)",
+    tag:"Visuals with a reason to exist",
+    keywords:["illustration","icons","images","banners","visual"],
+    body:[
+      "Custom illustrations, diagrams, and imagery that explain your business — not stock photos of handshakes.",
+      "Where a picture can replace three paragraphs, we make the picture: process diagrams, product visuals, service icons, social banners."
+    ]},
+  { id:"business-email", label:"Business Emails", icon:"✉️", grad:"linear-gradient(135deg,#38BDF8,#0369A1)",
+    tag:"you@yourcompany.com, done right",
+    keywords:["gmail","workspace","domain","mail","professional"],
+    body:[
+      "Sending quotations from a personal Gmail costs trust. We set up email on your own domain — Google Workspace or Zoho — with the records that keep you out of spam folders (SPF, DKIM, DMARC).",
+      "Includes signatures, shared inboxes like sales@ and support@, and migration of old mail if needed."
+    ]},
+  { id:"web-apps", label:"Business Applications", icon:"▦", grad:"linear-gradient(135deg,#B18CFF,#6A4DE0)",
+    tag:"For work that outgrew spreadsheets",
+    keywords:["app","crm","portal","internal","tool","software"],
+    body:[
+      "Dashboards, client portals, CRM-style systems, approval workflows — focused tools that fix a specific operational bottleneck.",
+      "We map the actual workflow first: who uses it, what they decide, what data matters. Then we build in phases, so you never pay for software you don't use."
+    ]},
+  { id:"dashboards", label:"Dashboards", icon:"📊", grad:"linear-gradient(135deg,#34D399,#047857)",
+    tag:"Your business at a glance",
+    keywords:["reports","analytics","kpi","metrics","data"],
+    body:[
+      "When reports take days to prepare, decisions wait. We build dashboards that pull your operations into one live view — orders, projects, payments, pipelines.",
+      "Built on your existing data wherever it lives: spreadsheets, Tally, your app's database."
+    ]},
+  { id:"workflows", label:"Approvals & Workflows", icon:"✅", grad:"linear-gradient(135deg,#FB923C,#C2410C)",
+    tag:"From phone-call approvals to a clear queue",
+    keywords:["process","automation","status","tracking","operations"],
+    body:[
+      "Approvals that happen over phone calls and WhatsApp leave no trail and stall when one person is busy. We turn them into request → review → release flows with visible status.",
+      "Everyone knows what's pending, with whom, and since when. That alone changes how a business runs."
+    ]},
+  { id:"ai-assistants", label:"AI Assistants", icon:"✦", grad:"linear-gradient(135deg,#C6F32F,#7BB61A)",
+    tag:"Practical AI, not gimmicks",
+    keywords:["chatbot","gpt","assistant","knowledge","llm","ai"],
+    body:[
+      "Internal assistants that answer from your documents, price lists, and SOPs — so your team stops re-asking the same three people the same questions.",
+      "We begin with the use case, not the tool: what's repeatedly searched, what's repetitive, where human review must stay."
+    ]},
+  { id:"automation", label:"Automation", icon:"⚡", grad:"linear-gradient(135deg,#F87171,#B91C1C)",
+    tag:"Kill the repetitive work",
+    keywords:["workflow","integration","zapier","scripts","repetitive","ai"],
+    body:[
+      "Data re-entered in three places, reports assembled by hand, documents renamed one by one — we automate the work nobody should be doing.",
+      "Quiet, reliable automations with clear boundaries and a human in the loop where judgment matters."
+    ]},
+  { id:"whatsapp", label:"WhatsApp Integration", icon:"💬", grad:"linear-gradient(135deg,#4ADE80,#166534)",
+    tag:"Meet customers where they already are",
+    keywords:["chat","messaging","business api","leads","india"],
+    body:[
+      "Your customers live on WhatsApp — your website should hand off to it cleanly. Click-to-chat, structured enquiries, order updates via the Business API.",
+      "We keep the habit your customers already have, but structure the data so nothing gets lost in a chat scroll."
+    ]},
+  { id:"analytics", label:"Analytics Setup", icon:"📈", grad:"linear-gradient(135deg,#60A5FA,#1D4ED8)",
+    tag:"Know what's working",
+    keywords:["ga4","tracking","conversion","measurement","data"],
+    body:[
+      "Which pages bring enquiries? Which ads waste money? We set up GA4 and conversion tracking that answers real questions, and a simple monthly view you'll actually read.",
+      "No drowning in dashboards — three numbers that matter beat thirty that don't."
+    ]},
+  { id:"hosting", label:"Hosting & Domains", icon:"🗄️", grad:"linear-gradient(135deg,#94A3B8,#475569)",
+    tag:"The plumbing, handled",
+    keywords:["server","deploy","domain","dns","ssl","maintenance"],
+    body:[
+      "Domains, DNS, SSL, deployment, backups, uptime — the plumbing every business site needs and no business owner should think about.",
+      "We set it up properly and can keep maintaining it, so your site stays fast, secure, and yours."
+    ]}
+];
+
+const grid = document.getElementById("grid");
+const q = document.getElementById("q");
+const count = document.getElementById("count");
+const qecho = document.getElementById("qecho");
+const modal = document.getElementById("modal");
+const mCta = document.getElementById("m-cta");
+
+// build tiles
+for (const s of SERVICES) {
+  const b = document.createElement("button");
+  b.className = "app"; b.type = "button"; b.setAttribute("role","listitem");
+  b.dataset.id = s.id;
+  b.dataset.hay = (s.label + " " + s.keywords.join(" ")).toLowerCase();
+  b.innerHTML = `<span class="ico" style="background:${s.grad}" aria-hidden="true">${s.icon}</span><span class="lbl">${s.label}</span>`;
+  b.addEventListener("click", () => openModal(s));
+  grid.appendChild(b);
+}
+
+function filter() {
+  const needle = q.value.trim().toLowerCase();
+  let shown = 0;
+  for (const tile of grid.children) {
+    const hit = !needle || tile.dataset.hay.includes(needle);
+    tile.hidden = !hit;
+    if (hit) { shown++; highlight(tile, needle); }
+  }
+  qecho.textContent = q.value.trim();
+  count.innerHTML = needle
+    ? (shown ? `<b>${shown}</b> of ${SERVICES.length} services match` : "")
+    : `${SERVICES.length} services — and counting`;
+}
+
+function highlight(tile, needle) {
+  const s = SERVICES.find(x => x.id === tile.dataset.id);
+  const lbl = tile.querySelector(".lbl");
+  if (!needle) { lbl.textContent = s.label; return; }
+  const i = s.label.toLowerCase().indexOf(needle);
+  lbl.innerHTML = i < 0 ? s.label
+    : s.label.slice(0,i) + "<mark>" + s.label.slice(i, i+needle.length) + "</mark>" + s.label.slice(i+needle.length);
+}
+
+function openModal(s) {
+  const ico = document.getElementById("m-ico");
+  ico.style.background = s.grad;
+  ico.textContent = s.icon;
+  document.getElementById("m-title").textContent = s.label;
+  document.getElementById("m-tag").textContent = s.tag;
+  document.getElementById("m-body").innerHTML = s.body.map(p => `<p>${p}</p>`).join("");
+  // hand off to the real contact block, pre-filled with the service
+  mCta.onclick = () => {
+    modal.close();
+    const msg = document.getElementById("cmsg");
+    if (!msg.value.trim()) msg.value = "I'd like to discuss: " + s.label;
+    document.getElementById("contact").scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("cname").focus({ preventScroll: true });
+  };
+  modal.showModal();
+}
+
+q.addEventListener("input", filter);
+document.getElementById("reset").addEventListener("click", () => { q.value = ""; filter(); q.focus(); });
+document.getElementById("m-close").addEventListener("click", () => modal.close());
+document.getElementById("m-x").addEventListener("click", () => modal.close());
+modal.addEventListener("click", e => { if (e.target === modal) modal.close(); }); // backdrop click closes
+
+// contact form (mock submit — the real site posts to a server-side route)
+document.getElementById("cform").addEventListener("submit", e => {
+  e.preventDefault();
+  document.getElementById("csent").textContent = "✓ Sent (mock) — we reply within one business day.";
+});
+
+document.addEventListener("keydown", e => {
+  const t = document.activeElement;
+  const typingElsewhere = t && t !== q && (t.tagName === "INPUT" || t.tagName === "TEXTAREA");
+  // Esc clears the search when the modal isn't open (the dialog handles its own Esc)
+  if (e.key === "Escape" && !modal.open && !typingElsewhere && q.value) { q.value = ""; filter(); }
+  // type anywhere -> focus search (Spotlight-style), unless typing in the contact form
+  if (!modal.open && t !== q && !typingElsewhere && e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) q.focus();
+  // Enter in search opens the first visible tile
+  if (e.key === "Enter" && t === q) {
+    e.preventDefault();
+    const first = grid.querySelector(".app:not([hidden])");
+    if (first) first.click();
+  }
+});
+
+filter();
+</script>
+</body>
+</html>
