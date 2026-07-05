@@ -1,13 +1,92 @@
 import type { Metadata } from "next";
-import { CTASection, FeatureCard, Page, PageHero, Prose, Section, TwoColumnSection } from "@/components/content";
+import Link from "next/link";
+import { CTASection, Checklist, FeatureCard, Page, PageHero, Prose, Section, TwoColumnSection } from "@/components/content";
 
-export const metadata: Metadata = { title: "About Comikage — Business-First Website & Application Development", description: "Comikage is a business-first technology studio helping founders and growing companies build websites, business applications, and AI-powered digital systems by first understanding the business." };
-const builds = [["Business websites", "Professional websites, landing pages, service pages, and digital presence systems for companies that need to communicate clearly and build credibility."], ["Business applications", "Internal dashboards, admin panels, client portals, CRM-style systems, approval workflows, project tracking tools, and custom applications for businesses that have outgrown spreadsheets."], ["AI and automation", "Practical AI-assisted workflows, internal knowledge tools, document search systems, lead qualification flows, chatbot interfaces, and automation systems that reduce repetitive work."]];
+export const metadata: Metadata = {
+  title: "About Comikage — Founder-Led Business Technology Studio",
+  description: "Comikage is a founder-led business technology studio by Apurv Mittal, helping businesses clarify requirements before building websites, applications, and AI-powered digital systems."
+};
 
-export default function About() { return <Page><PageHero eyebrow="About Comikage" title="Built for businesses that need more than a developer." body={<><p>Comikage is a business-first technology studio that helps founders, startups, and growing companies build websites, business applications, and AI-powered digital systems.</p><p className="font-semibold text-ink">But we do not start with code. We start by understanding the business.</p></>} />
-  <Section title="Why Comikage exists" surface><Prose><p>Many business owners approach web developers expecting a complete digital solution. Instead, they are often asked to provide everything themselves: the content, structure, positioning, page flow, calls-to-action, and sometimes even the business logic.</p><p>The developer then builds what is provided. That may produce a website, but it rarely produces clarity.</p><p>Comikage works differently. We help business owners think through the digital requirement before development begins—shaping the structure, refining the messaging, mapping the customer journey, and identifying whether the business needs a website, application, automation, or internal system.</p></Prose></Section>
-  <Section eyebrow="Operator perspective" title="Founder-led thinking"><TwoColumnSection><Prose><p>Every project is approached with questions that go beyond design and development:</p><ul className="list-disc space-y-2 pl-5"><li>What does the business need to communicate?</li><li>What should a customer understand before making an enquiry?</li><li>Where are manual workflows slowing the team down?</li><li>Which processes can be simplified through software?</li><li>What should be built now, and what should be deferred?</li></ul></Prose><Prose><p>This perspective matters because digital projects fail when technology is separated from business reality.</p><p>A beautiful website without trust, enquiries, or clarity is not enough. An application that ignores real workflows becomes another unused tool. AI without a clear operational use case becomes a gimmick.</p><p>Comikage focuses on practical digital systems that support actual business outcomes.</p></Prose></TwoColumnSection></Section>
-  <Section title="What we build" surface><div className="grid gap-5 lg:grid-cols-3">{builds.map(([t,d],i)=><FeatureCard key={t} title={t} number={`0${i+1}`}>{d}</FeatureCard>)}</div></Section>
-  <Section title="How we work"><Prose><p>Every engagement begins with understanding. We clarify the business model, audience, offer, workflow, constraints, and desired outcome. From there, we define the right digital scope.</p><p>Sometimes the right first step is a focused website or landing page. Sometimes it is a business application. Sometimes the smartest recommendation is to start smaller and build in phases.</p><p>That is why Comikage does not sell technology as a commodity. We help define what should be built, why it should be built, and how it should support the business.</p></Prose></Section>
-  <Section title="Who Comikage is for" surface><Prose><p>Comikage is for founders, consultants, professional firms, service businesses, and growing companies that want a technology partner who can think with them.</p><p>It is especially useful for businesses that need a better digital presence or internal system, but are not yet clear on the exact structure, content, features, or technical approach.</p><p>If you already know exactly what to build, we can help execute it. If you only know the business problem, we can help define the solution.</p></Prose></Section>
-  <CTASection title="Build technology around your business." body="If you are planning a website, business application, client portal, dashboard, or AI-powered workflow, Comikage can help you clarify the right first step." label="Discuss a Project" /></Page>; }
+const businessReality = [
+  "Workflows that have evolved without being formally documented",
+  "Vendor coordination, approvals, and operational dependencies",
+  "Spreadsheets carrying more responsibility than they were designed for",
+  "Financial decisions made with incomplete or scattered information",
+  "Projects moving through ambiguity, changing priorities, and manual follow-up",
+  "Software requirements that different stakeholders describe differently"
+];
+
+const builds = [
+  ["Business websites", "Clear, credible websites and landing pages that organise the business message, explain the offer, and make the next step easier for the customer."],
+  ["Business applications", "Dashboards, portals, CRM-style systems, approval workflows, reporting tools, and focused software shaped around real operations."],
+  ["AI and automation", "Practical assistants, document search, workflow automation, and AI-supported tools with clear boundaries and useful human review points."]
+];
+
+export default function About() {
+  return <Page>
+    <PageHero eyebrow="About Comikage" title="Built by a business operator, not just a developer." body={<>
+      <p>Comikage is a business-first technology studio founded to help business owners build websites, applications, and AI-powered systems with greater clarity.</p>
+      <p>The idea behind Comikage comes from a simple observation: most business owners do not struggle because they cannot find someone to write code or design pages. They struggle because the real business requirement is often unclear, unstructured, or difficult to translate into a digital product.</p>
+      <Link href="/#contact" className="button-primary mt-3">Let&apos;s Begin With the Business</Link>
+    </>} />
+
+    <Section eyebrow="The founder" title="A technical education. A business operator’s perspective." surface>
+      <div className="grid items-start gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
+        <aside className="card overflow-hidden p-6 sm:p-8">
+          <div className="relative grid aspect-[4/3] place-items-center overflow-hidden rounded-2xl border border-line bg-white/[.04]">
+            <div className="absolute h-52 w-52 rounded-full border border-violet/40" />
+            <div className="absolute h-32 w-32 rotate-45 rounded-[28px] border border-accent/30 bg-white/[.05]" />
+            <div className="relative grid h-20 w-20 place-items-center rounded-2xl bg-accent text-2xl font-bold text-canvas shadow-[0_0_26px_rgba(198,243,47,.22)]">AM</div>
+          </div>
+          <p className="mt-7 text-2xl font-semibold tracking-tight">Apurv Mittal</p>
+          <p className="mt-1 text-[15px] font-semibold text-accent">Founder, Comikage</p>
+          <p className="mt-5 border-t border-line pt-5 text-base leading-relaxed text-muted">Business operator, systems thinker, and AI-assisted technology builder.</p>
+        </aside>
+        <Prose>
+          <p>Apurv Mittal’s path into technology did not begin inside a web agency. It began with electronics engineering, followed by a master’s degree in systems engineering and robotics—fields that encourage thinking in relationships, constraints, feedback loops, and complete systems rather than isolated parts.</p>
+          <p>That technical foundation was followed by more than 15 years around business operations, including the operational reality of infrastructure and civil engineering businesses. The work involved the less visible machinery that keeps a business moving: vendors, approvals, spreadsheets, financial decisions, project execution, manual coordination, and problems that rarely arrive in a neat specification.</p>
+          <p>It also created practical exposure to significant business scale and operational complexity, and to the challenge of thinking through enterprise and business software requirements before a system is built.</p>
+          <blockquote className="border-l-2 border-accent pl-6 text-xl font-semibold leading-8 text-ink">“The technology is only useful when it fits the way the business actually works.”</blockquote>
+        </Prose>
+      </div>
+    </Section>
+
+    <Section eyebrow="Why it matters" title="Clients should not have to translate their business into developer language.">
+      <TwoColumnSection>
+        <Prose><p>Most developers begin by asking for a page list, content document, feature requirements, and examples of what the client likes. Those inputs are useful—but many business owners are seeking help precisely because those decisions are not yet clear.</p><p>Asking the client to define everything first transfers the most important thinking back to them.</p></Prose>
+        <Prose><p>Comikage begins one level earlier. We discuss the business, customer, offer, workflow, constraints, and decisions the digital product needs to support. From that understanding, the page structure, content direction, system scope, and technical requirements become clearer.</p><p>This reduces guesswork before design and development begin.</p></Prose>
+      </TwoColumnSection>
+    </Section>
+
+    <Section eyebrow="Business reality" title="Technology has to survive contact with operations." surface>
+      <p className="body-copy mb-9 max-w-3xl">Business requirements are rarely clean at the start. They are shaped by existing habits, people, commercial constraints, and years of practical workarounds. Comikage understands that reality.</p>
+      <Checklist items={businessReality} />
+    </Section>
+
+    <Section eyebrow="How technology is used" title="AI-assisted, but judgment-led.">
+      <TwoColumnSection>
+        <Prose><p>Comikage uses modern AI-assisted development workflows to explore, prototype, review, and build efficiently. These tools can shorten feedback loops and make focused delivery possible.</p><p>But speed is not a substitute for judgment. AI does not decide what the business should communicate, which workflow matters most, where risk sits, or what should be deferred.</p></Prose>
+        <div className="glass-card p-8 sm:p-10"><p className="eyebrow">The operating principle</p><p className="mt-5 text-2xl font-semibold leading-9 tracking-tight">Use AI for leverage. Use human judgment for direction, scope, and business fit.</p></div>
+      </TwoColumnSection>
+    </Section>
+
+    <Section eyebrow="What we build" title="Practical digital systems around real business needs." surface>
+      <div className="grid gap-5 lg:grid-cols-3">{builds.map(([title, description], index) => <FeatureCard key={title} title={title} number={`0${index + 1}`}>{description}</FeatureCard>)}</div>
+    </Section>
+
+    <Section eyebrow="The working relationship" title="Start with understanding. Build in sensible phases.">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <FeatureCard number="01" title="Understand"><p>Discuss the business model, customer, offer, workflow, and constraints.</p></FeatureCard>
+        <FeatureCard number="02" title="Clarify"><p>Turn business knowledge into a clear website structure, feature scope, or automation use case.</p></FeatureCard>
+        <FeatureCard number="03" title="Build"><p>Design and develop the focused first phase with modern, maintainable tools.</p></FeatureCard>
+        <FeatureCard number="04" title="Improve"><p>Review what is working, then expand only where the business case is clear.</p></FeatureCard>
+      </div>
+    </Section>
+
+    <Section eyebrow="A good fit" title="Who should work with Comikage" surface>
+      <Prose><p>Comikage is for founders, consultants, professional firms, service businesses, and growing companies that want someone to think with them—not simply wait for instructions.</p><p>It is particularly useful when the business problem is understood but the digital solution is not yet fully defined: when you know the website needs to communicate better, the workflow needs structure, or AI may be useful, but the right scope still needs careful thought.</p><p>If you already have a clear specification, Comikage can help execute it. If you have business knowledge, operational friction, and an unfinished idea, Comikage can help turn that ambiguity into a practical first step.</p></Prose>
+    </Section>
+
+    <CTASection title="Let’s begin with the business." body="Tell us what you are trying to improve, build, or understand. We will help clarify the right digital first step." label="Discuss a Project" />
+  </Page>;
+}

@@ -5,6 +5,10 @@ out/
 *.log
 *.tsbuildinfo
 .DS_Store
+.env
 .env*.local
 .env.production
+!.env.example
 backups/
+.claude/
+design-mockups/preview-*

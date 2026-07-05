@@ -1,118 +1,139 @@
-"use client";
-
-import { useState } from "react";
-import { ArrowDown, ArrowRight, Check, GearSix, List, Robot, X, Browser, CaretDown } from "@/components/icons";
-
-const nav = [["Services", "/services"], ["Approach", "/approach"], ["Packages", "/packages"], ["About", "/about"], ["Contact", "mailto:hello@comikage.com"]];
-
-function Logo() {
-  return <a href="#top" className="flex items-center gap-3" aria-label="Comikage home">
-    <span className="grid h-9 w-9 place-items-center rounded-[10px] bg-ink text-white"><span className="h-3.5 w-3.5 rotate-45 rounded-[3px] border-2 border-white" /></span>
-    <span className="text-sm font-bold tracking-[0.16em]">COMIKAGE</span>
-  </a>;
-}
-
-function Header() {
-  const [open, setOpen] = useState(false);
-  return <header className="sticky top-0 z-50 border-b border-line/80 bg-canvas/90 backdrop-blur-xl">
-    <div className="shell flex h-20 items-center justify-between">
-      <Logo />
-      <nav className="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
-        {nav.map(([label, href]) => <a key={href} href={href} className="text-sm font-medium text-muted transition hover:text-ink">{label}</a>)}
-        <a href="mailto:hello@comikage.com?subject=Discovery Session" className="button-primary !px-4 !py-3">Book Discovery <ArrowRight weight="bold" /></a>
-      </nav>
-      <button onClick={() => setOpen(!open)} className="grid h-11 w-11 place-items-center rounded-xl border border-line bg-white lg:hidden" aria-label="Toggle menu" aria-expanded={open}>{open ? <X size={20} /> : <List size={22} />}</button>
-    </div>
-    {open && <nav className="shell flex flex-col gap-1 border-t border-line py-4 lg:hidden" aria-label="Mobile navigation">
-      {nav.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-sm font-medium hover:bg-white">{label}</a>)}
-      <a href="mailto:hello@comikage.com?subject=Discovery Session" className="button-primary mt-2">Book Discovery</a>
-    </nav>}
-  </header>;
-}
-
-const flow = ["Business", "Strategy", "Design", "Technology", "Growth"];
-
-function HeroVisual() {
-  return <div className="relative mx-auto max-w-lg lg:mr-0">
-    <div className="absolute -inset-10 rounded-full bg-blue-100/50 blur-3xl" />
-    <div className="relative overflow-hidden rounded-[28px] border border-line bg-white p-5 shadow-soft sm:p-7">
-      <div className="mb-7 flex items-center justify-between border-b border-line pb-5">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.15em] text-muted">Project blueprint</p><p className="mt-1 text-sm font-semibold">Built from the inside out</p></div>
-        <span className="flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-accent"><span className="h-1.5 w-1.5 rounded-full bg-accent" /> In focus</span>
-      </div>
-      <div className="space-y-2">
-        {flow.map((item, i) => <div key={item}>
-          <div className={`flex items-center gap-4 rounded-2xl border p-4 ${i === 0 ? "border-accent/20 bg-blue-50" : "border-line bg-white"}`}>
-            <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xs font-bold ${i === 0 ? "bg-accent text-white" : "bg-slate-100 text-muted"}`}>{String(i + 1).padStart(2, "0")}</span>
-            <span className="font-semibold">{item}</span><span className="ml-auto h-px w-8 bg-line" />
-          </div>
-          {i < flow.length - 1 && <div className="ml-[34px] h-4 w-px bg-slate-300" />}
-        </div>)}
-      </div>
-    </div>
-  </div>;
-}
-
-const services = [
-  { icon: Browser, n: "01", title: "Business Websites", href: "/services/business-websites", text: "Professional websites that communicate clearly, establish credibility, and generate enquiries." },
-  { icon: GearSix, n: "02", title: "Business Applications", href: "/services/business-applications", text: "Internal tools, dashboards, portals, CRMs, approval workflows, and custom software for businesses that have outgrown spreadsheets." },
-  { icon: Robot, n: "03", title: "AI & Automation", href: "/services/ai-automation", text: "Practical AI systems that reduce repetitive work, improve access to information, and support faster decision-making." }
-];
+import Link from "next/link";
+import { Footer, Header } from "@/components/site-shell";
+import { ServicesLauncher } from "@/components/services-launcher";
+import { ContactForm } from "@/components/contact-form";
 
 const clarity = [
-  ["C", "Context", "Understand the business model, goals, and constraints."], ["L", "Listen", "Understand customers, stakeholders, and decision-makers."],
-  ["A", "Analyse", "Map workflows, content needs, and digital gaps."], ["R", "Recommend", "Define the website, application, or automation strategy."],
-  ["I", "Implement", "Build with modern, AI-assisted development workflows."], ["T", "Test", "Review usability, performance, and business fit."],
-  ["Y", "Yield", "Support, improve, and scale after launch."]
+  ["C", "Context", "Business model, goals, constraints."],
+  ["L", "Listen", "Customers, stakeholders, decision-makers."],
+  ["A", "Analyse", "Workflows, content needs, digital gaps."],
+  ["R", "Recommend", "The right website, app, or automation."],
+  ["I", "Implement", "Modern, AI-assisted delivery."],
+  ["T", "Test", "Usability, performance, business fit."],
+  ["Y", "Yield", "Support, improve, scale after launch."]
 ];
 
 const packages = [
-  { title: "Startup Website Foundation", price: "₹35,000", desc: "For founders and small businesses that need a professional first website.", list: ["Up to 5 pages", "Responsive design", "Basic copy refinement", "Contact form", "Basic SEO", "Deployment support"] },
-  { title: "Business Presence Plus", price: "₹60,000", desc: "For service businesses that need stronger positioning and a complete digital presence.", list: ["Up to 8 pages", "Service page copy", "Analytics setup", "Search Console", "WhatsApp integration", "Two revision rounds"], featured: true },
-  { title: "Website + Business Application", price: "Custom Engagement", desc: "For businesses that need a website plus internal dashboards, portals, CRM, or workflow tools.", list: ["Custom scope", "Login-based systems", "Admin dashboards", "Workflow automation", "Ongoing support options"] }
-];
-
-const faqs = [
-  ["Who writes the website content?", "Comikage helps shape and refine the content. The client provides business knowledge; we turn it into a clear website structure and message."],
-  ["How quickly can a website launch?", "A focused starter website can be launched quickly once the scope, content direction, and assets are clear. More complex websites and applications are scoped separately."],
-  ["Do you only build websites?", "No. Websites are often the starting point. We also build business applications, internal tools, dashboards, portals, and AI-assisted workflows."],
-  ["Can you help with hosting and email?", "Yes. Hosting, domain configuration, business email, analytics, and ongoing maintenance can be added as separate services."]
+  { title: "Starter Site", from: "Starting at", price: "₹35,000", text: "A sharp, credible one-page presence — live in weeks, not months." },
+  { title: "Business Website", from: "Starting at", price: "₹60,000", text: "Full multi-page site with content, SEO basics, and business email." },
+  { title: "Applications & AI", from: "Scoped to your workflow", price: "Custom", text: "Workflow tools, dashboards, assistants — priced after we map the work." }
 ];
 
 export default function Home() {
-  return <><Header /><main id="top">
-    <section className="shell grid min-h-[760px] items-center gap-16 py-20 lg:grid-cols-[1.08fr_.92fr] lg:py-24">
-      <div><p className="eyebrow">Business-first technology consultancy</p>
-        <h1 className="mt-6 max-w-3xl text-5xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-6xl lg:text-[72px]">Technology built around your <span className="text-accent">business.</span> Not the other way around.</h1>
-        <p className="body-copy mt-7 max-w-2xl">Comikage helps founders and business owners clarify their digital strategy before building websites, business applications, and AI-powered systems. Every project starts with understanding the business — not just the technology.</p>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row"><a className="button-primary" href="mailto:hello@comikage.com?subject=Discovery Session">Book a Discovery Session <ArrowRight weight="bold" /></a><a className="button-secondary" href="#approach">See How We Work <ArrowDown /></a></div>
-      </div><HeroVisual />
-    </section>
+  return (
+    <>
+      <Header />
+      <main>
+        <section className="shell pb-3 pt-[clamp(140px,17vh,190px)] text-center">
+          <p className="eyebrow">Business-first technology consultancy</p>
+          <h1 className="mt-4 text-balance text-[clamp(44px,5vw,72px)] font-bold leading-[1.08] tracking-[-0.018em]">
+            What does your business need?
+          </h1>
+          <p className="mx-auto mt-5 max-w-[44ch] text-[23px] leading-relaxed text-muted">
+            Type it. We probably build it. If not,{" "}
+            <Link href="#contact" className="font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#DAFF5A]">
+              get in touch
+            </Link>
+            .
+          </p>
+        </section>
 
-    <section className="border-y border-line bg-white"><div className="shell grid grid-cols-2 divide-x divide-y divide-line lg:grid-cols-4 lg:divide-y-0">{["15+ Years Business Experience", "₹100 Cr+ Operations Exposure", "Business-First Planning", "AI-Assisted Delivery"].map((x, i) => <div key={x} className="flex min-h-28 items-center gap-3 p-5 sm:p-7"><span className="text-sm font-bold text-accent">0{i + 1}</span><p className="text-sm font-semibold leading-5">{x}</p></div>)}</div></section>
+        <section className="shell pb-6 pt-8">
+          <ServicesLauncher />
+        </section>
 
-    <section className="shell grid gap-12 py-24 lg:grid-cols-[.75fr_1.25fr] lg:py-32"><div><p className="eyebrow">The common problem</p><h2 className="section-title">Your website shouldn&apos;t require you to become a web designer.</h2></div><div className="max-w-2xl lg:pt-8"><p className="body-copy">Many business owners hire a developer expecting a finished website. Instead, they are asked to provide the content, page structure, messaging, customer journey, and calls-to-action themselves.</p><p className="mt-6 text-xl font-semibold leading-8 text-ink">Most developers simply build what they are given.</p><p className="body-copy mt-6">Comikage works differently. We help shape the business message before building the digital product.</p></div></section>
+        <section aria-label="Our mission" className="relative border-y border-white/[.07] py-[clamp(64px,9vh,104px)] text-center">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_120%_at_50%_50%,rgba(139,124,246,.17),transparent_72%)]" aria-hidden="true" />
+          <div className="shell relative">
+            <p className="mx-auto max-w-[30em] text-balance text-[clamp(24px,2.4vw,30px)] font-medium leading-relaxed tracking-[-0.008em]">
+              Comikage turns <span className="text-accent">unclear requirements</span> — the WhatsApp threads, the spreadsheets, the half-written briefs — into websites, applications, and AI systems that <span className="text-accent">fit the way your business actually works</span>.
+            </p>
+          </div>
+        </section>
 
-    <section id="approach" className="bg-ink py-24 text-white lg:py-32"><div className="shell"><p className="eyebrow !text-blue-400">A different starting point</p><h2 className="mt-4 max-w-4xl text-3xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">Most developers ask, “What pages do you want?”</h2><p className="mt-4 text-xl text-slate-400 sm:text-2xl">We ask, “How does your business work?”</p>
-      <div className="mt-14 grid gap-5 md:grid-cols-2"><Contrast title="Typical Web Development" items={["Client provides content", "Client decides page structure", "Developer builds screens", "Website looks acceptable", "Business impact is unclear"]} /><Contrast title="The Comikage Approach" items={["Understand the business", "Clarify customers and offering", "Define content and conversion flow", "Build website or application", "Improve based on business goals"]} active /></div>
-    </div></section>
+        <section id="process" aria-label="The CLARITY process" className="shell pb-2 pt-[clamp(52px,7vh,80px)] text-center">
+          <p className="eyebrow">How we work</p>
+          <h2 className="mt-3.5 text-[clamp(26px,2.6vw,34px)] font-bold tracking-[-0.012em]">
+            Seven letters. <span className="text-accent">CLARITY.</span>
+          </h2>
+          <div className="mt-8 overflow-x-auto pb-3">
+            <div className="panel-shell relative grid min-w-[1080px] grid-cols-7 gap-2.5 text-left">
+              <div className="pointer-events-none absolute inset-x-2 top-[34px] z-0 h-0.5 rounded-full bg-gradient-to-r from-accent to-violet opacity-85" aria-hidden="true" />
+              {clarity.map(([letter, title, text]) => (
+                <div key={letter} className="relative z-[1] rounded-[20px] border border-line bg-glass p-4 pb-5 shadow-card backdrop-blur-[28px]">
+                  <span className="grid h-[52px] w-[52px] place-items-center rounded-2xl border border-accent/40 bg-black/40 text-2xl font-bold text-accent shadow-[inset_0_1px_0_rgba(255,255,255,.22),inset_0_-6px_10px_rgba(0,0,0,.35),0_8px_18px_rgba(0,0,0,.45)]">
+                    {letter}
+                  </span>
+                  <b className="mt-3.5 block text-base font-bold">{title}</b>
+                  <span className="mt-1.5 block text-[15px] leading-snug text-muted">{text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-    <section id="services" className="shell py-24 lg:py-32"><p className="eyebrow">What we build</p><h2 className="section-title">Websites, applications, and AI systems designed around real business needs.</h2><div className="mt-14 grid gap-5 lg:grid-cols-3">{services.map(({ icon: Icon, n, title, href, text }) => <a href={href} className="card flex min-h-[330px] flex-col p-7 sm:p-9" key={title}><div className="flex items-start justify-between"><span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-accent"><Icon size={24} /></span><span className="text-xs font-semibold text-slate-400">{n}</span></div><h3 className="mt-auto pt-14 text-2xl font-semibold tracking-tight">{title}</h3><p className="mt-4 leading-7 text-muted">{text}</p></a>)}</div></section>
+        <section id="proof" className="shell pb-3 pt-11">
+          <div className="panel-shell glass-card p-[clamp(26px,3.4vw,44px)]">
+            <p className="eyebrow">Proof, not decoration</p>
+            <blockquote className="mt-4 max-w-[34em] text-balance text-[clamp(23px,2.4vw,28px)] font-medium leading-tight tracking-[-0.01em]">
+              &ldquo;The technology is only useful when it fits the way the business <span className="text-accent">actually works</span>.&rdquo;
+            </blockquote>
+            <p className="mt-3.5 text-base text-muted">
+              <b className="font-bold text-ink">Apurv Mittal</b> — Founder. Electronics engineer, M.S. Systems Engineering &amp; Robotics, 15+ years running business operations across infrastructure and civil engineering.
+            </p>
+            <div className="mt-7 grid gap-x-11 gap-y-5 border-t border-line pt-6 sm:grid-cols-2">
+              <div>
+                <b className="mb-2 block text-[15px] font-bold uppercase tracking-[0.1em] text-violet">Case 01 · Placeholder</b>
+                <p className="max-w-[62ch] text-lg leading-relaxed text-muted">
+                  <strong className="font-semibold text-ink">A contractor&apos;s approval chaos <span className="font-bold text-accent">→</span> a three-screen workflow tool.</strong> Approvals that took 4 days now clear in one.
+                </p>
+              </div>
+              <div>
+                <b className="mb-2 block text-[15px] font-bold uppercase tracking-[0.1em] text-violet">Case 02 · Placeholder</b>
+                <p className="max-w-[62ch] text-lg leading-relaxed text-muted">
+                  <strong className="font-semibold text-ink">A distributor&apos;s WhatsApp order pile <span className="font-bold text-accent">→</span> a structured order portal.</strong> Zero missed orders in the first quarter.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <section className="border-y border-line bg-white py-24 lg:py-32"><div className="shell"><div className="grid gap-10 lg:grid-cols-2"><div><p className="eyebrow">Our method</p><h2 className="section-title">The CLARITY Framework</h2><a href="/approach" className="button-secondary mt-7">Explore our approach <ArrowRight /></a></div><p className="body-copy lg:pt-8">Every Comikage project follows a structured discovery-to-delivery process, so the final product is based on understanding rather than guesswork.</p></div><div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2 lg:grid-cols-4">{clarity.map(([letter, title, text], i) => <div key={letter} className={`bg-white p-7 ${i === 6 ? "lg:col-span-2" : ""}`}><span className="text-3xl font-semibold text-accent">{letter}</span><h3 className="mt-8 font-semibold">{title}</h3><p className="mt-2 text-sm leading-6 text-muted">{text}</p></div>)}</div></div></section>
+        {/*
+          Planned: a "Portfolio" section goes here (between Proof and Packages) — a clickable
+          mindmap whose nodes name real sites/apps (e.g. designlingua.com, apurvakriti.com) and
+          open a full-page modal with an iframe, permissions allowing. Deferred to a later stage
+          per Apurv — not built yet.
+        */}
 
-    <section id="packages" className="shell py-24 lg:py-32"><p className="eyebrow">Engagements</p><h2 className="section-title">Start with the right scope. Expand when the business is ready.</h2><div className="mt-14 grid items-stretch gap-5 lg:grid-cols-3">{packages.map(p => <article key={p.title} className={`relative flex flex-col rounded-2xl border p-7 sm:p-8 ${p.featured ? "border-accent bg-white shadow-soft" : "border-line bg-white shadow-card"}`}>{p.featured && <span className="absolute right-5 top-5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-accent">Most popular</span>}<h3 className="max-w-[220px] text-xl font-semibold leading-7">{p.title}</h3><p className="mt-8 text-xs font-semibold uppercase tracking-wider text-muted">{p.price === "Custom Engagement" ? "" : "Starting from"}</p><p className="mt-1 text-3xl font-semibold tracking-tight">{p.price}</p><p className="mt-5 min-h-20 text-sm leading-6 text-muted">{p.desc}</p><div className="my-6 h-px bg-line" /><ul className="space-y-3">{p.list.map(x => <li key={x} className="flex gap-3 text-sm"><Check className="mt-0.5 shrink-0 text-accent" weight="bold" />{x}</li>)}</ul><a href="mailto:hello@comikage.com?subject=Project Enquiry" className={p.featured ? "button-primary mt-8" : "button-secondary mt-8"}>Discuss this package <ArrowRight /></a></article>)}</div></section>
+        <section id="pricing" aria-label="Packages" className="shell pb-3 pt-12 text-center">
+          <p className="eyebrow">Packages</p>
+          <div className="panel-shell mt-6 grid gap-3.5 text-left sm:grid-cols-3">
+            {packages.map((p) => (
+              <div key={p.title} className="glass-card p-[clamp(24px,3vw,32px)]">
+                <h3 className="text-lg font-bold tracking-wide">{p.title}</h3>
+                <p className="mt-3.5 text-[15px] font-semibold uppercase tracking-[0.08em] text-muted">{p.from}</p>
+                <p className="mt-1 text-[clamp(30px,3vw,38px)] font-bold tracking-[-0.015em]">{p.price}</p>
+                <p className="mt-3 text-base leading-relaxed text-muted">{p.text}</p>
+              </div>
+            ))}
+          </div>
+          <Link href="/packages" className="mt-6 inline-flex items-center gap-2 font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#DAFF5A]">
+            View packages →
+          </Link>
+        </section>
 
-    <section className="border-t border-line bg-white py-24 lg:py-32"><div className="shell grid gap-14 lg:grid-cols-[.7fr_1.3fr]"><div><p className="eyebrow">FAQ</p><h2 className="section-title">Questions, answered plainly.</h2></div><div className="divide-y divide-line">{faqs.map(([q, a], i) => <details key={q} className="group py-6" open={i === 0}><summary className="flex cursor-pointer list-none items-center justify-between gap-5 font-semibold"><span>{q}</span><CaretDown className="shrink-0 transition group-open:rotate-180" /></summary><p className="mt-4 max-w-2xl leading-7 text-muted">{a}</p></details>)}</div></div></section>
-
-    <section id="contact" className="shell py-16 lg:py-24"><div className="relative overflow-hidden rounded-[28px] bg-accent px-6 py-16 text-center text-white sm:px-12 lg:py-24"><div className="absolute -right-28 -top-28 h-80 w-80 rounded-full border border-white/15" /><div className="absolute -bottom-48 -left-20 h-96 w-96 rounded-full border border-white/10" /><div className="relative mx-auto max-w-3xl"><p className="text-xs font-semibold uppercase tracking-[.18em] text-blue-100">Start with clarity</p><h2 className="mt-5 text-4xl font-semibold leading-tight tracking-[-0.04em] sm:text-5xl">Ready to build technology around your business?</h2><p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-blue-100">Tell us what you are trying to build. We will help clarify the right first step.</p><a className="mt-9 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-4 text-sm font-semibold text-accent transition hover:bg-ink hover:text-white" href="mailto:hello@comikage.com?subject=Discovery Session">Book a Discovery Session <ArrowRight weight="bold" /></a></div></div></section>
-  </main><Footer /></>;
-}
-
-function Contrast({ title, items, active = false }: { title: string; items: string[]; active?: boolean }) {
-  return <article className={`rounded-2xl border p-7 sm:p-9 ${active ? "border-blue-500/40 bg-blue-500/10" : "border-white/10 bg-white/[.035]"}`}><div className="flex items-center gap-3"><span className={`h-2.5 w-2.5 rounded-full ${active ? "bg-blue-400" : "bg-slate-600"}`} /><h3 className="text-lg font-semibold">{title}</h3></div><ul className="mt-8 space-y-4">{items.map((x, i) => <li className="flex items-center gap-3 text-sm text-slate-300" key={x}><span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs ${active ? "bg-blue-500/20 text-blue-300" : "bg-white/5 text-slate-500"}`}>{active ? <Check weight="bold" /> : i + 1}</span>{x}</li>)}</ul></article>;
-}
-
-function Footer() {
-  return <footer className="border-t border-line bg-white"><div className="shell py-12"><div className="flex flex-col justify-between gap-10 md:flex-row"><div><Logo /><p className="mt-5 max-w-xs text-sm leading-6 text-muted">Business-first websites, applications, and AI systems.</p></div><div className="flex flex-wrap gap-x-8 gap-y-4">{nav.map(([label, href]) => <a key={href} href={href} className="text-sm text-muted hover:text-ink">{label}</a>)}<a href="/privacy" className="text-sm text-muted hover:text-ink">Privacy Policy</a></div></div><div className="mt-12 flex flex-col justify-between gap-4 border-t border-line pt-7 text-sm text-muted sm:flex-row"><a href="mailto:hello@comikage.com" className="hover:text-ink">hello@comikage.com</a><p>© 2026 Comikage. All rights reserved.</p></div></div></footer>;
+        <section id="contact" className="shell scroll-mt-28 pb-3 pt-12">
+          <div className="panel-shell glass-card p-[clamp(26px,3.4vw,44px)]">
+            <p className="eyebrow">Start a conversation</p>
+            <h2 className="mt-3 text-[clamp(26px,2.8vw,34px)] font-bold tracking-[-0.012em]">Tell us what&apos;s unclear. That&apos;s our starting point.</h2>
+            <p className="mt-2.5 max-w-[52ch] text-lg leading-relaxed text-muted">
+              A rough idea is enough — two lines about your business and what&apos;s slowing it down. We&apos;ll reply within one working day.
+            </p>
+            <ContactForm />
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
 }

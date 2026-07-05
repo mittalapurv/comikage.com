@@ -1,4 +1,78 @@
 import type { Metadata } from "next";
 import { CTASection, Checklist, FeatureCard, Page, PageHero, Prose, Section } from "@/components/content";
-export const metadata: Metadata = { title: "AI Automation Services — Comikage", description: "Practical AI and automation services for businesses, including internal knowledge tools, document search, lead qualification, chatbot interfaces, and workflow automation." };
-export default function AIAutomation(){const uses=["Internal knowledge assistants","Document search systems","Lead qualification flows","Customer support assistants","Proposal and quotation drafting","Report summarisation","Workflow automation","Data extraction from documents"];const identify=["What information is repeatedly searched","What questions are repeatedly answered","What documents or data sources are available","What tasks are repetitive","Where human review is still required","What risks need to be controlled"];return <Page><PageHero eyebrow="AI & Automation" title="Practical AI for real business work." body={<p>AI should solve a specific business problem: reducing repetitive work, improving access to information, speeding up decisions, or helping teams serve customers better.</p>} /><Section title="Begin with the use case, not the tool" surface><Prose><p>Many AI projects fail because they begin with the tool instead of the use case.</p><p>A chatbot without useful knowledge is a gimmick. An automation without workflow understanding creates confusion. A document assistant without good source material gives weak answers.</p><p>Comikage starts with the business workflow first.</p></Prose></Section><Section title="Useful AI opportunities"><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{uses.map((x,i)=><FeatureCard key={x} title={x} number={String(i+1).padStart(2,"0")}/>)}</div></Section><Section title="Our approach" surface><p className="body-copy mb-8 max-w-3xl">We identify:</p><Checklist items={identify}/></Section><Section title="AI with human judgment"><Prose><p>AI should support the business, not blindly replace judgment.</p><p>Comikage designs AI workflows with clear boundaries, review points, and practical expectations.</p></Prose></Section><CTASection title="Find the right AI use case before building the tool." label="Discuss AI & Automation" subject="AI and Automation" /></Page>}
+
+export const metadata: Metadata = {
+  title: "AI Automation Services — Comikage",
+  description:
+    "Practical AI and automation services for businesses, including internal knowledge tools, document search, lead qualification, chatbot interfaces, and workflow automation."
+};
+
+const uses = [
+  "Internal knowledge assistants",
+  "Document search systems",
+  "Lead qualification flows",
+  "Customer support assistants",
+  "Proposal and quotation drafting",
+  "Report summarisation",
+  "Workflow automation",
+  "Data extraction from documents"
+];
+
+const identify = [
+  "What information is repeatedly searched",
+  "What questions are repeatedly answered",
+  "What documents or data sources are available",
+  "What tasks are repetitive",
+  "Where human review is still required",
+  "What risks need to be controlled"
+];
+
+export default function AIAutomation() {
+  return (
+    <Page>
+      <PageHero
+        eyebrow="AI & Automation"
+        title="Practical AI for real business work."
+        body={
+          <p>
+            AI should solve a specific business problem: reducing repetitive work, improving access to information,
+            speeding up decisions, or helping teams serve customers better.
+          </p>
+        }
+      />
+
+      <Section title="Begin with the use case, not the tool" surface>
+        <Prose>
+          <p>Many AI projects fail because they begin with the tool instead of the use case.</p>
+          <p>
+            A chatbot without useful knowledge is a gimmick. An automation without workflow understanding creates
+            confusion. A document assistant without good source material gives weak answers.
+          </p>
+          <p>Comikage starts with the business workflow first.</p>
+        </Prose>
+      </Section>
+
+      <Section title="Useful AI opportunities">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {uses.map((x, i) => (
+            <FeatureCard key={x} title={x} number={String(i + 1).padStart(2, "0")} />
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Our approach" surface>
+        <p className="body-copy mb-8 max-w-3xl">We identify:</p>
+        <Checklist items={identify} />
+      </Section>
+
+      <Section title="AI with human judgment">
+        <Prose>
+          <p>AI should support the business, not blindly replace judgment.</p>
+          <p>Comikage designs AI workflows with clear boundaries, review points, and practical expectations.</p>
+        </Prose>
+      </Section>
+
+      <CTASection title="Find the right AI use case before building the tool." label="Discuss AI & Automation" />
+    </Page>
+  );
+}
