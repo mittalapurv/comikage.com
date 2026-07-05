@@ -10,6 +10,9 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      GMAIL_USER: ${GMAIL_USER:-a29npvtltd@gmail.com}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD:-}
+      CONTACT_TO_EMAIL: ${CONTACT_TO_EMAIL:-a29npvtltd@gmail.com}
     ports:
       - "127.0.0.1:3010:3000"
     depends_on:
