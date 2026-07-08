@@ -22,7 +22,7 @@ export function FounderProfileCard() {
         <div className="grid h-20 w-20 shrink-0 place-items-center rounded-[22px] border border-line bg-white/5 text-xl font-bold text-accent">AM</div>
         <div>
           <p className="text-xl font-bold">Apurv Mittal</p>
-          <p className="mt-1 text-base font-semibold text-accent">Founder, Comikage</p>
+          <p className="mt-1 text-base font-semibold text-accent">Founder, LetsCRUD</p>
         </div>
       </div>
       <p className="relative mt-6 border-t border-line pt-5 text-base leading-relaxed text-muted">

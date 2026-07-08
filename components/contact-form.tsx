@@ -42,7 +42,7 @@ export function ContactForm() {
         throw new Error(
           data.error ||
             (res.status === 404 || res.status === 405
-              ? "Email delivery isn't set up on this deployment yet — please email hello@comikage.com."
+              ? "Email delivery isn't set up on this deployment yet — please email hello@letscrud.com."
               : "Something went wrong. Please try again.")
         );
       }
@@ -54,7 +54,7 @@ export function ContactForm() {
       setError(
         err instanceof Error && err.message !== "Failed to fetch"
           ? err.message
-          : "Couldn't send just now — please try again, or email hello@comikage.com."
+          : "Couldn't send just now — please try again, or email hello@letscrud.com."
       );
     }
   }
@@ -98,9 +98,7 @@ export function ContactForm() {
         <button type="submit" disabled={status === "sending"} className="button-primary disabled:opacity-60">
           {status === "sending" ? "Sending…" : status === "sent" ? "✓ Sent — we'll reply within a day" : "Send message →"}
         </button>
-        <p className="text-[15px] leading-snug text-muted">
-          {status === "error" ? <span className="text-accent">{error}</span> : "Delivers to a29npvtltd@gmail.com via a server-side route — no mailto."}
-        </p>
+        {status === "error" && <p className="text-[15px] leading-snug text-accent">{error}</p>}
       </div>
     </form>
   );

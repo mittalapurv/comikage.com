@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Page, PageHero, Prose, Section } from "@/components/content";
 
-export const metadata: Metadata = { title: "Privacy Policy — Comikage", description: "Privacy policy for Comikage." };
+export const metadata: Metadata = { title: "Privacy Policy — LetsCRUD", description: "Privacy policy for LetsCRUD." };
 
 const sections: { title: string; body: React.ReactNode }[] = [
   {
     title: "Introduction",
     body: (
       <p>
-        This policy explains how Comikage, a business-first website, application, and AI automation consultancy, handles
+        This policy explains how LetsCRUD, a business-first website, application, and AI automation consultancy, handles
         information received through this website.
       </p>
     )
@@ -87,7 +87,7 @@ const sections: { title: string; body: React.ReactNode }[] = [
           href="/#contact"
           className="font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#DAFF5A]"
         >
-          hello@comikage.com
+          hello@letscrud.com
         </Link>
         .
       </p>

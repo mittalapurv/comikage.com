@@ -9,8 +9,10 @@ const lexend = Lexend({
 });
 
 export const metadata: Metadata = {
-  title: "Comikage — Business-First Websites, Applications & AI Systems",
-  description: "Comikage helps founders and business owners clarify business requirements before building websites, applications, and AI-powered digital systems.",
+  metadataBase: new URL("https://letscrud.com"),
+  title: "LetsCRUD — Business-First Websites, Applications & AI Systems",
+  description: "LetsCRUD helps founders and business owners clarify business requirements before building websites, applications, and AI-powered digital systems.",
+  alternates: { canonical: "/" },
   icons: { icon: "/favicon.svg" }
 };
 

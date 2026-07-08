@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-APP_DIR="/opt/comikage"
-COMPOSE=(sudo docker compose --project-name comikage --env-file .env.production)
+APP_DIR="/opt/letscrud"
+COMPOSE=(sudo docker compose --project-name letscrud --env-file .env.production)
 
 cd "$APP_DIR"
 
@@ -18,12 +18,12 @@ git pull --ff-only
 
 for attempt in {1..30}; do
   if curl --fail --silent --show-error http://127.0.0.1:3010/health >/dev/null; then
-    echo "Comikage deployment healthy."
+    echo "LetsCRUD deployment healthy."
     exit 0
   fi
   sleep 2
 done
 
-echo "Comikage health check failed; recent app logs:" >&2
+echo "LetsCRUD health check failed; recent app logs:" >&2
 "${COMPOSE[@]}" logs --tail=100 app >&2
 exit 1

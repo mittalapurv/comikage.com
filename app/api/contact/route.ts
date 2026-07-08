@@ -69,7 +69,7 @@ export async function POST(request: Request) {
   // Link-stuffing heuristic: real enquiries rarely contain more than a couple of URLs.
   const linkCount = (message.match(/https?:\/\//gi) || []).length;
   if (linkCount > 5) {
-    return NextResponse.json({ error: "That looks like spam. If it isn't, please email hello@comikage.com." }, { status: 400 });
+    return NextResponse.json({ error: "That looks like spam. If it isn't, please email hello@letscrud.com." }, { status: 400 });
   }
 
   if (ipLimited(clientIp(request))) {
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
   if (dailyCapReached()) {
     console.error("Contact form daily cap reached; refusing further sends today.");
     return NextResponse.json(
-      { error: "We're receiving a lot of messages right now. Please email hello@comikage.com directly." },
+      { error: "We're receiving a lot of messages right now. Please email hello@letscrud.com directly." },
       { status: 429 }
     );
   }
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
   if (!user || !pass) {
     console.error("Contact form submission received but GMAIL_USER/GMAIL_APP_PASSWORD are not configured.", { name, email, message });
     return NextResponse.json(
-      { error: "Email delivery isn't configured yet. Please email hello@comikage.com directly for now." },
+      { error: "Email delivery isn't configured yet. Please email hello@letscrud.com directly for now." },
       { status: 503 }
     );
   }
@@ -109,10 +109,10 @@ export async function POST(request: Request) {
 
     await transporter.sendMail({
       // Gmail requires the authenticated account as the sender; the visitor goes in replyTo
-      from: `Comikage Website <${user}>`,
+      from: `LetsCRUD Website <${user}>`,
       to,
       replyTo: email || undefined,
-      subject: `New enquiry from ${name || "the Comikage website"}`,
+      subject: `New enquiry from ${name || "the LetsCRUD website"}`,
       text: [
         `Name: ${name || "(not provided)"}`,
         `Email/phone: ${email || "(not provided)"}`,

@@ -10,9 +10,9 @@ export const siteNav = [
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5" aria-label="Comikage home">
+    <Link href="/" className="flex items-center gap-2.5" aria-label="LetsCRUD home">
       <span className="text-2xl leading-none text-accent" aria-hidden="true">影</span>
-      <span className="text-base font-extrabold tracking-[0.12em]">COMIKAGE</span>
+      <span className="text-base font-extrabold tracking-[0.12em]">LETSCRUD</span>
     </Link>
   );
 }
@@ -78,8 +78,8 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-12 flex flex-col justify-between gap-4 border-t border-line pt-7 text-base text-muted sm:flex-row">
-          <a href="mailto:hello@comikage.com" className="hover:text-ink">hello@comikage.com</a>
-          <p>© 2026 Comikage. All rights reserved.</p>
+          <a href="mailto:hello@letscrud.com" className="hover:text-ink">hello@letscrud.com</a>
+          <p>© 2026 LetsCRUD. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -46,7 +46,7 @@ export default function Home() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_120%_at_50%_50%,rgba(139,124,246,.17),transparent_72%)]" aria-hidden="true" />
           <div className="shell relative">
             <p className="mx-auto max-w-[30em] text-balance text-[clamp(24px,2.4vw,30px)] font-medium leading-relaxed tracking-[-0.008em]">
-              Comikage turns <span className="text-accent">unclear requirements</span> — the WhatsApp threads, the spreadsheets, the half-written briefs — into websites, applications, and AI systems that <span className="text-accent">fit the way your business actually works</span>.
+              LetsCRUD turns <span className="text-accent">unclear requirements</span> — the WhatsApp threads, the spreadsheets, the half-written briefs — into websites, applications, and AI systems that <span className="text-accent">fit the way your business actually works</span>.
             </p>
           </div>
         </section>

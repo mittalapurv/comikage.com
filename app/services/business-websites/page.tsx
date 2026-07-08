@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CTASection, Checklist, PackageCard, Page, PageHero, Prose, Section } from "@/components/content";
 
 export const metadata: Metadata = {
-  title: "Business Website Development — Comikage",
+  title: "Business Website Development — LetsCRUD",
   description:
     "Business-first website development for founders, startups, consultants, and growing companies that need clear positioning, content structure, and professional execution."
 };
@@ -64,7 +64,7 @@ export default function BusinessWebsites() {
         </Prose>
       </Section>
 
-      <Section title="Comikage helps shape the website before building it">
+      <Section title="LetsCRUD helps shape the website before building it">
         <Checklist items={clarify} />
       </Section>
 

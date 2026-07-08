@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CTASection, Checklist, Page, PageHero, Prose, Section } from "@/components/content";
 
-export const metadata: Metadata = { title: "Approach — The Comikage CLARITY Framework", description: "The Comikage CLARITY Framework helps businesses move from unclear digital requirements to websites, applications, and AI systems built around real business needs." };
+export const metadata: Metadata = { title: "Approach — The LetsCRUD CLARITY Framework", description: "The LetsCRUD CLARITY Framework helps businesses move from unclear digital requirements to websites, applications, and AI systems built around real business needs." };
 
 const steps = [
   ["C", "Context", "Understand the business model, goals, constraints, and commercial reality."],
@@ -19,7 +19,7 @@ export default function Approach() {
       <PageHero
         eyebrow="Our approach"
         title="Think first. Build second."
-        body={<p>Every Comikage project begins with understanding. The goal is not to rush into pages, features, or tools, but to define what the business actually needs the digital product to achieve.</p>}
+        body={<p>Every LetsCRUD project begins with understanding. The goal is not to rush into pages, features, or tools, but to define what the business actually needs the digital product to achieve.</p>}
       />
       <Section title="The CLARITY Framework" surface>
         <div className="overflow-x-auto pb-3">
@@ -39,7 +39,7 @@ export default function Approach() {
       </Section>
       <Section title="Why this matters">
         <Prose>
-          <p>Most digital projects fail because they begin with execution before understanding. Comikage uses discovery and structured thinking to reduce ambiguity before development begins.</p>
+          <p>Most digital projects fail because they begin with execution before understanding. LetsCRUD uses discovery and structured thinking to reduce ambiguity before development begins.</p>
         </Prose>
       </Section>
       <Section title="What the client gets from discovery" surface>

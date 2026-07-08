@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CTASection, Checklist, FeatureCard, Page, PageHero, Prose, Section } from "@/components/content";
 
 export const metadata: Metadata = {
-  title: "Business Application Development — Comikage",
+  title: "Business Application Development — LetsCRUD",
   description:
     "Custom business applications, dashboards, portals, CRM-style systems, and workflow tools for businesses that need software around real operations."
 };
@@ -50,7 +50,7 @@ export default function BusinessApplications() {
         body={
           <p>
             When operations depend on Excel files, WhatsApp messages, email follow-ups, and manual status tracking, growth becomes
-            harder to manage. Comikage builds practical applications around how your team actually works.
+            harder to manage. LetsCRUD builds practical applications around how your team actually works.
           </p>
         }
       />
@@ -79,7 +79,7 @@ export default function BusinessApplications() {
 
       <Section title="Phased development">
         <p className="body-copy mb-8 max-w-3xl">
-          Business applications should not be overbuilt on day one. Comikage recommends phased development:
+          Business applications should not be overbuilt on day one. LetsCRUD recommends phased development:
         </p>
         <div className="grid gap-5 md:grid-cols-4">
           {phases.map((x, i) => (

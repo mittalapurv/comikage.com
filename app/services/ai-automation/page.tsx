@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CTASection, Checklist, FeatureCard, Page, PageHero, Prose, Section } from "@/components/content";
 
 export const metadata: Metadata = {
-  title: "AI Automation Services — Comikage",
+  title: "AI Automation Services — LetsCRUD",
   description:
     "Practical AI and automation services for businesses, including internal knowledge tools, document search, lead qualification, chatbot interfaces, and workflow automation."
 };
@@ -48,7 +48,7 @@ export default function AIAutomation() {
             A chatbot without useful knowledge is a gimmick. An automation without workflow understanding creates
             confusion. A document assistant without good source material gives weak answers.
           </p>
-          <p>Comikage starts with the business workflow first.</p>
+          <p>LetsCRUD starts with the business workflow first.</p>
         </Prose>
       </Section>
 
@@ -68,7 +68,7 @@ export default function AIAutomation() {
       <Section title="AI with human judgment">
         <Prose>
           <p>AI should support the business, not blindly replace judgment.</p>
-          <p>Comikage designs AI workflows with clear boundaries, review points, and practical expectations.</p>
+          <p>LetsCRUD designs AI workflows with clear boundaries, review points, and practical expectations.</p>
         </Prose>
       </Section>
 

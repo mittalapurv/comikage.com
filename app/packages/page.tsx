@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { CTASection, FeatureCard, PackageCard, Page, PageHero, Prose, Section } from "@/components/content";
 
 export const metadata: Metadata = {
-  title: "Packages — Comikage Website & Application Development",
+  title: "Packages — LetsCRUD Website & Application Development",
   description:
-    "Comikage offers business-first website and application development packages, starting with focused websites and expanding into business applications, AI automation, and ongoing support."
+    "LetsCRUD offers business-first website and application development packages, starting with focused websites and expanding into business applications, AI automation, and ongoing support."
 };
 
 const packs = [
@@ -77,7 +77,7 @@ export default function Packages() {
       <PageHero
         eyebrow="Packages"
         title="Start with the right scope. Expand when the business is ready."
-        body={<p>Comikage engagements are structured to help businesses launch with clarity and then grow into deeper digital systems when needed.</p>}
+        body={<p>LetsCRUD engagements are structured to help businesses launch with clarity and then grow into deeper digital systems when needed.</p>}
       />
       <Section title="Choose a practical starting point" surface>
         <div className="grid gap-5 lg:grid-cols-3">
