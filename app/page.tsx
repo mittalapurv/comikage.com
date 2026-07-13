@@ -106,11 +106,15 @@ export default function Home() {
         <section id="proof" className="shell pb-3 pt-11">
           <div className="panel-shell glass-card p-[clamp(26px,3.4vw,44px)]">
             <p className="eyebrow">Proof, not decoration</p>
-            <blockquote className="mt-4 max-w-[34em] text-balance text-[clamp(23px,2.4vw,28px)] font-medium leading-tight tracking-[-0.01em]">
-              &ldquo;The technology is only useful when it fits the way the business <span className="text-accent">actually works</span>.&rdquo;
+            {/* Testimonial text approved by Mr. Dinesh Gour (July 2026) — do not edit without fresh sign-off. */}
+            <blockquote className="mt-4 max-w-[48em] text-balance text-[clamp(20px,2vw,25px)] font-medium leading-snug tracking-[-0.008em]">
+              &ldquo;Websites were never a priority for a business like ours — work comes through relationships and tenders. LetsCRUD didn&apos;t try to change that; they built for it. Our projects, credentials, and open tenders now sit on one page instead of in courier packets and email attachments. It is the first piece of technology we&apos;ve bought that <span className="text-accent">fit how we already work</span>.&rdquo;
             </blockquote>
             <p className="mt-3.5 text-base text-muted">
-              <b className="font-bold text-ink">Apurv Mittal</b> — Founder. Electronics engineer, M.S. Systems Engineering &amp; Robotics, 15+ years running business operations across infrastructure and civil engineering.
+              <b className="font-bold text-ink">Dinesh Gour</b> — General Manager, Apurvakriti Infrastructure Pvt. Ltd.
+            </p>
+            <p className="mt-6 border-t border-line pt-5 text-base text-muted">
+              LetsCRUD is founder-led: <b className="font-bold text-ink">Apurv Mittal</b>{" — "}electronics engineer, M.S. Systems Engineering &amp; Robotics, 15+ years running business operations across infrastructure and civil engineering.
             </p>
           </div>
         </section>
