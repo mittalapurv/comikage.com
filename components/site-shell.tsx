@@ -9,10 +9,12 @@ export const siteNav = [
 ] as const;
 
 export function Logo() {
+  // Brand lockup per the LetsCRUD kit: "Lets" 400 muted, "CRUD" 700, blinking amber caret.
   return (
-    <Link href="/" className="flex items-center gap-2.5" aria-label="LetsCRUD home">
-      <span className="text-2xl leading-none text-accent" aria-hidden="true">影</span>
-      <span className="text-base font-extrabold tracking-[0.12em]">LETSCRUD</span>
+    <Link href="/" className="brand-lockup flex items-baseline text-[21px] leading-none" aria-label="LetsCRUD home">
+      <span className="font-normal text-[#9BA0AC]">Lets</span>
+      <span className="font-bold text-[#EDEEF2]">CRUD</span>
+      <span className="brand-caret" aria-hidden="true" />
     </Link>
   );
 }

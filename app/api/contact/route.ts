@@ -66,6 +66,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Tell us a little about what you need." }, { status: 400 });
   }
 
+  if (!email) {
+    return NextResponse.json(
+      { error: "Please add an email or phone number so we can reply to you." },
+      { status: 400 }
+    );
+  }
+
   // Link-stuffing heuristic: real enquiries rarely contain more than a couple of URLs.
   const linkCount = (message.match(/https?:\/\//gi) || []).length;
   if (linkCount > 5) {

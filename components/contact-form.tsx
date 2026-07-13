@@ -28,6 +28,16 @@ export function ContactForm() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!message.trim()) {
+      setStatus("error");
+      setError("Tell us a little about what you need.");
+      return;
+    }
+    if (!email.trim()) {
+      setStatus("error");
+      setError("Please add an email or phone number so we can reply to you.");
+      return;
+    }
     setStatus("sending");
     setError("");
     try {
@@ -75,7 +85,7 @@ export function ContactForm() {
         <input
           id="c-name" name="name" type="text" autoComplete="name" placeholder="e.g. Priya Sharma"
           value={name} onChange={(e) => setName(e.target.value)}
-          className="w-full rounded-2xl border-[1.5px] border-line bg-black/[.34] px-4 py-3.5 text-lg text-ink placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_4px_rgba(198,243,47,.14)] focus:outline-none"
+          className="w-full rounded-2xl border-[1.5px] border-line bg-black/[.34] px-4 py-3.5 text-lg text-ink placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_4px_rgba(242,169,59,.14)] focus:outline-none"
         />
       </div>
       <div className="flex flex-col gap-1.5">
@@ -83,7 +93,7 @@ export function ContactForm() {
         <input
           id="c-email" name="email" type="text" autoComplete="email" placeholder="you@company.com"
           value={email} onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-2xl border-[1.5px] border-line bg-black/[.34] px-4 py-3.5 text-lg text-ink placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_4px_rgba(198,243,47,.14)] focus:outline-none"
+          className="w-full rounded-2xl border-[1.5px] border-line bg-black/[.34] px-4 py-3.5 text-lg text-ink placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_4px_rgba(242,169,59,.14)] focus:outline-none"
         />
       </div>
       <div className="flex flex-col gap-1.5 sm:col-span-2">
@@ -91,7 +101,7 @@ export function ContactForm() {
         <textarea
           id="c-msg" name="message" placeholder="Even a WhatsApp-style message works — we'll ask the right questions."
           value={message} onChange={(e) => setMessage(e.target.value)}
-          className="min-h-[132px] w-full resize-y rounded-2xl border-[1.5px] border-line bg-black/[.34] px-4 py-3.5 text-lg text-ink placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_4px_rgba(198,243,47,.14)] focus:outline-none"
+          className="min-h-[132px] w-full resize-y rounded-2xl border-[1.5px] border-line bg-black/[.34] px-4 py-3.5 text-lg text-ink placeholder:text-muted focus:border-accent/70 focus:shadow-[0_0_0_4px_rgba(242,169,59,.14)] focus:outline-none"
         />
       </div>
       <div className="flex flex-wrap items-center gap-4 sm:col-span-2">

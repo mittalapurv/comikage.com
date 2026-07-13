@@ -14,7 +14,7 @@ const config: Config = {
         ink: "#F2F4F8",
         muted: "#C9CDD6",
         line: "rgba(255,255,255,.14)",
-        accent: "#C6F32F",
+        accent: "#F2A93B",
         violet: "#8B7CF6",
         navy: "#8B7CF6",
         glass: "rgba(22,23,30,.66)"

@@ -36,7 +36,7 @@ export default function About() {
           <div className="relative grid aspect-[4/3] place-items-center overflow-hidden rounded-2xl border border-line bg-white/[.04]">
             <div className="absolute h-52 w-52 rounded-full border border-violet/40" />
             <div className="absolute h-32 w-32 rotate-45 rounded-[28px] border border-accent/30 bg-white/[.05]" />
-            <div className="relative grid h-20 w-20 place-items-center rounded-2xl bg-accent text-2xl font-bold text-canvas shadow-[0_0_26px_rgba(198,243,47,.22)]">AM</div>
+            <div className="relative grid h-20 w-20 place-items-center rounded-2xl bg-accent text-2xl font-bold text-canvas shadow-[0_0_26px_rgba(242,169,59,.22)]">AM</div>
           </div>
           <p className="mt-7 text-2xl font-semibold tracking-tight">Apurv Mittal</p>
           <p className="mt-1 text-[15px] font-semibold text-accent">Founder, LetsCRUD</p>

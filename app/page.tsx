@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Footer, Header } from "@/components/site-shell";
 import { ServicesLauncher } from "@/components/services-launcher";
 import { ContactForm } from "@/components/contact-form";
@@ -13,10 +14,40 @@ const clarity = [
   ["Y", "Yield", "Support, improve, scale after launch."]
 ];
 
+// Names and inclusions mirror /packages — keep the two pages in sync when editing.
+// `outcome` lines describe what the build does for its reader — keep them free of
+// unverified metrics; client-attributed quotes/numbers go live only after sign-off.
+const work = [
+  {
+    title: "Apurvakriti Infrastructure",
+    tag: "Business website",
+    text: "Corporate site for a rail-infrastructure company — projects, tenders, careers, and enquiries.",
+    outcome: "Company-profile PDFs and courier packets → one living project record, built for the way prequalification committees actually read.",
+    img: "/portfolio/apurvakriti.webp",
+    href: "https://apurvakriti.com"
+  },
+  {
+    title: "Design Lingua",
+    tag: "Business website",
+    text: "Studio site for an interior-design practice — services, project portfolio, and recruitment.",
+    outcome: "A design practice judged on taste, showing its taste — portfolio first, brochure second.",
+    img: "/portfolio/designlingua.webp",
+    href: "http://designlingua.com"
+  },
+  {
+    title: "Rizune Trips",
+    tag: "Business application",
+    text: "Executive travel desk — booking requests, approvals, documents, and expenses in one internal portal.",
+    outcome: "Travel plans scattered across WhatsApp → request, approve, book, file. One auditable trail.",
+    img: "/portfolio/rizune-trips.webp",
+    href: null
+  }
+];
+
 const packages = [
-  { title: "Starter Site", from: "Starting at", price: "₹35,000", text: "A sharp, credible one-page presence — live in weeks, not months." },
-  { title: "Business Website", from: "Starting at", price: "₹60,000", text: "Full multi-page site with content, SEO basics, and business email." },
-  { title: "Applications & AI", from: "Scoped to your workflow", price: "Custom", text: "Workflow tools, dashboards, assistants — priced after we map the work." }
+  { title: "Startup Website Foundation", from: "Starting at", price: "₹35,000", text: "A sharp, credible first website — up to 5 pages, live in weeks, not months." },
+  { title: "Business Presence Plus", from: "Starting at", price: "₹60,000", text: "Multi-page site with stronger positioning, analytics, and WhatsApp integration." },
+  { title: "Website + Business Application", from: "Scoped to your workflow", price: "Custom", text: "Workflow tools, dashboards, assistants — priced after we map the work." }
 ];
 
 export default function Home() {
@@ -31,7 +62,7 @@ export default function Home() {
           </h1>
           <p className="mx-auto mt-5 max-w-[44ch] text-[23px] leading-relaxed text-muted">
             Type it. We probably build it. If not,{" "}
-            <Link href="#contact" className="font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#DAFF5A]">
+            <Link href="#contact" className="font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#FFC46B]">
               get in touch
             </Link>
             .
@@ -81,29 +112,48 @@ export default function Home() {
             <p className="mt-3.5 text-base text-muted">
               <b className="font-bold text-ink">Apurv Mittal</b> — Founder. Electronics engineer, M.S. Systems Engineering &amp; Robotics, 15+ years running business operations across infrastructure and civil engineering.
             </p>
-            <div className="mt-7 grid gap-x-11 gap-y-5 border-t border-line pt-6 sm:grid-cols-2">
-              <div>
-                <b className="mb-2 block text-[15px] font-bold uppercase tracking-[0.1em] text-violet">Case 01 · Placeholder</b>
-                <p className="max-w-[62ch] text-lg leading-relaxed text-muted">
-                  <strong className="font-semibold text-ink">A contractor&apos;s approval chaos <span className="font-bold text-accent">→</span> a three-screen workflow tool.</strong> Approvals that took 4 days now clear in one.
-                </p>
-              </div>
-              <div>
-                <b className="mb-2 block text-[15px] font-bold uppercase tracking-[0.1em] text-violet">Case 02 · Placeholder</b>
-                <p className="max-w-[62ch] text-lg leading-relaxed text-muted">
-                  <strong className="font-semibold text-ink">A distributor&apos;s WhatsApp order pile <span className="font-bold text-accent">→</span> a structured order portal.</strong> Zero missed orders in the first quarter.
-                </p>
-              </div>
-            </div>
           </div>
         </section>
 
-        {/*
-          Planned: a "Portfolio" section goes here (between Proof and Packages) — a clickable
-          mindmap whose nodes name real sites/apps (e.g. designlingua.com, apurvakriti.com) and
-          open a full-page modal with an iframe, permissions allowing. Deferred to a later stage
-          per Apurv — not built yet.
-        */}
+        <section id="work" aria-label="Selected work" className="shell pb-3 pt-12 text-center">
+          <p className="eyebrow">Selected work</p>
+          <h2 className="mt-3.5 text-[clamp(26px,2.6vw,34px)] font-bold tracking-[-0.012em]">
+            Real sites. Real systems.
+          </h2>
+          <div className="panel-shell mt-7 grid gap-3.5 text-left sm:grid-cols-2 lg:grid-cols-3">
+            {work.map((w) => {
+              const card = (
+                <>
+                  <div className="overflow-hidden rounded-2xl border border-line">
+                    <Image
+                      src={w.img}
+                      alt={`Screenshot of ${w.title}`}
+                      width={1280}
+                      height={800}
+                      className="h-auto w-full transition duration-300 group-hover:scale-[1.02]"
+                    />
+                  </div>
+                  <p className="mt-4 text-[14px] font-bold uppercase tracking-[0.1em] text-accent">{w.tag}</p>
+                  <h3 className="mt-1.5 text-lg font-bold">
+                    {w.title}
+                    {w.href && <span className="ml-2 font-semibold text-muted" aria-hidden="true">↗</span>}
+                  </h3>
+                  <p className="mt-1.5 text-base leading-relaxed text-muted">{w.text}</p>
+                  <p className="mt-3.5 border-t border-line pt-3.5 text-[15px] leading-relaxed text-ink">{w.outcome}</p>
+                </>
+              );
+              return w.href ? (
+                <a key={w.title} href={w.href} target="_blank" rel="noopener noreferrer" className="group glass-card block p-4 pb-6 transition duration-300 hover:-translate-y-1 hover:border-accent/50 sm:p-5 sm:pb-7">
+                  {card}
+                </a>
+              ) : (
+                <div key={w.title} className="group glass-card p-4 pb-6 sm:p-5 sm:pb-7">
+                  {card}
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
         <section id="pricing" aria-label="Packages" className="shell pb-3 pt-12 text-center">
           <p className="eyebrow">Packages</p>
@@ -117,7 +167,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <Link href="/packages" className="mt-6 inline-flex items-center gap-2 font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#DAFF5A]">
+          <Link href="/packages" className="mt-6 inline-flex items-center gap-2 font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#FFC46B]">
             View packages →
           </Link>
         </section>

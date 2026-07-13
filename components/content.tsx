@@ -79,7 +79,7 @@ export function Checklist({ items, columns = 2 }: { items: string[]; columns?: 1
 
 export function PackageCard({ title, price, description, items, featured }: { title: string; price: string; description: string; items: string[]; featured?: boolean }) {
   return (
-    <article className={`glass-card flex flex-col p-8 ${featured ? "!border-accent/60 shadow-[0_0_40px_rgba(198,243,47,.12)]" : ""}`}>
+    <article className={`glass-card flex flex-col p-8 ${featured ? "!border-accent/60 shadow-[0_0_40px_rgba(242,169,59,.12)]" : ""}`}>
       <h3 className="text-xl font-bold">{title}</h3>
       <p className="mt-6 text-3xl font-bold tracking-tight">{price}</p>
       <p className="mt-5 text-base leading-relaxed text-muted">{description}</p>

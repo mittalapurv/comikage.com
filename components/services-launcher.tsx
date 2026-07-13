@@ -77,7 +77,7 @@ const SERVICES: Service[] = [
       "Approvals that happen over phone calls and WhatsApp leave no trail and stall when one person is busy. We turn them into request → review → release flows with visible status.",
       "Everyone knows what's pending, with whom, and since when. That alone changes how a business runs."
     ] },
-  { id: "ai-assistants", label: "AI Assistants", icon: "✦", grad: "linear-gradient(135deg,#C6F32F,#7BB61A)",
+  { id: "ai-assistants", label: "AI Assistants", icon: "✦", grad: "linear-gradient(135deg,#F2A93B,#B97A1C)",
     tag: "Practical AI, not gimmicks",
     keywords: ["chatbot", "gpt", "assistant", "knowledge", "llm", "ai"],
     body: [
@@ -132,9 +132,6 @@ export function ServicesLauncher() {
   const [active, setActive] = useState<Service | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  // Set right before dialogRef.close() when "Discuss this with us" is clicked; consumed by
-  // handleDialogClose once the native close (and its focus-restoration) has actually happened.
-  const pendingHandoffRef = useRef<string | null>(null);
 
   const needle = query.trim().toLowerCase();
   const matches = useMemo(
@@ -144,16 +141,23 @@ export function ServicesLauncher() {
 
   useEffect(() => {
     if (active) dialogRef.current?.showModal();
-    else dialogRef.current?.close();
+    else if (dialogRef.current?.open) dialogRef.current.close();
   }, [active]);
 
-  function handleDialogClose() {
+  // Every close path we control goes through here rather than through the dialog's
+  // native "close" event — current Chrome (149) fails to deliver that event, which
+  // left `active` stale (the same tile became unclickable) and broke the handoff.
+  // onClose/onCancel on the <dialog> remain only as fallbacks for browser-initiated
+  // closes in spec-compliant browsers.
+  function closeModal() {
     setActive(null);
-    const message = pendingHandoffRef.current;
-    if (!message) return;
-    pendingHandoffRef.current = null;
-    sessionStorage.setItem(CONTACT_PREFILL_KEY, message);
+    if (dialogRef.current?.open) dialogRef.current.close();
+  }
+
+  function discuss(service: Service) {
+    sessionStorage.setItem(CONTACT_PREFILL_KEY, `I'd like to discuss: ${service.label}.\n`);
     window.dispatchEvent(new Event(CONTACT_PREFILL_EVENT));
+    closeModal();
 
     const contactEl = document.getElementById("contact");
     if (!contactEl) {
@@ -167,8 +171,8 @@ export function ServicesLauncher() {
       contactEl.scrollIntoView({ behavior: "auto", block: "start" });
       (document.getElementById("c-msg") as HTMLTextAreaElement | null)?.focus({ preventScroll: true });
     };
-    // Run now, and reassert once more after the browser's own dialog-close focus-restoration
-    // (which can fire slightly after this handler) has had its say — so ours is the last word.
+    // Run now, and reassert once more after the browser's dialog-close focus-restoration
+    // (which can land a frame later and scroll back to the invoking tile) has had its say.
     goToContact();
     requestAnimationFrame(() => requestAnimationFrame(goToContact));
   }
@@ -179,7 +183,13 @@ export function ServicesLauncher() {
       const typingElsewhere = !!el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable) && el !== inputRef.current;
       const modalOpen = dialogRef.current?.open;
 
-      if (e.key === "Escape" && !modalOpen && query && !typingElsewhere) { setQuery(""); return; }
+      if (e.key === "Escape") {
+        // The browser closes the <dialog> itself on Escape; mirror it into React state
+        // here since the close event can't be trusted to arrive (see closeModal).
+        if (modalOpen) { setActive(null); return; }
+        if (query && !typingElsewhere) { setQuery(""); }
+        return;
+      }
       if (!modalOpen && el !== inputRef.current && !typingElsewhere && e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) {
         inputRef.current?.focus();
       }
@@ -192,19 +202,11 @@ export function ServicesLauncher() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [query, matches]);
 
-  function discuss(service: Service) {
-    // Stash the handoff and let the dialog's native "close" event (fired by the browser
-    // after its own close/focus-restoration steps, per the <dialog> spec) trigger the
-    // scroll — see handleDialogClose. Doing it here instead would race the browser's own
-    // focus-restore-to-invoker behavior and lose.
-    pendingHandoffRef.current = `I'd like to discuss: ${service.label}.\n`;
-    dialogRef.current?.close();
-  }
-
   return (
     <div className="launcher-zone" id="services" aria-label="Service launcher">
       <style>{`
-        .launcher-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(142px,1fr)); gap:8px; margin-top:8px; }
+        .launcher-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(128px,1fr)); gap:8px; margin-top:8px; }
+        @media (pointer: coarse) { .esc-hint { display:none; } }
         .launcher-tile { appearance:none; border:none; background:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:12px; padding:20px 8px 16px; border-radius:22px; transition:background .18s, scale .18s; }
         .launcher-tile:hover { background:rgba(255,255,255,.08); }
         .launcher-tile:active { scale:.94; }
@@ -215,7 +217,7 @@ export function ServicesLauncher() {
       `}</style>
 
       <div className="panel-shell rounded-[32px] border border-line bg-glass p-[clamp(22px,3vw,34px)] shadow-soft backdrop-blur-[28px]">
-        <div className="mx-auto flex max-w-[640px] items-center gap-3.5 rounded-2xl border-[1.5px] border-line bg-black/[.34] px-5 focus-within:border-accent/70 focus-within:shadow-[0_0_0_4px_rgba(198,243,47,.14)]">
+        <div className="mx-auto flex max-w-[640px] items-center gap-3.5 rounded-2xl border-[1.5px] border-line bg-black/[.34] px-5 focus-within:border-accent/70 focus-within:shadow-[0_0_0_4px_rgba(242,169,59,.14)]">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="shrink-0 opacity-75" aria-hidden="true">
             <circle cx="11" cy="11" r="7" /><path d="m20 20-3.4-3.4" />
           </svg>
@@ -230,7 +232,7 @@ export function ServicesLauncher() {
             aria-label="Search services"
             className="min-w-0 flex-1 bg-transparent py-[18px] text-xl font-medium text-ink placeholder:text-muted focus:outline-none"
           />
-          <span className="shrink-0 rounded-md border border-line px-2.5 py-1 text-sm font-bold text-muted" aria-hidden="true">esc</span>
+          <span className="esc-hint shrink-0 rounded-md border border-line px-2.5 py-1 text-sm font-bold text-muted" aria-hidden="true">esc</span>
         </div>
 
         <p className="min-h-[30px] pt-3 text-center text-base font-medium text-muted" aria-live="polite">
@@ -258,8 +260,9 @@ export function ServicesLauncher() {
 
       <dialog
         ref={dialogRef}
-        onClose={handleDialogClose}
-        onClick={(e) => { if (e.target === dialogRef.current) dialogRef.current?.close(); }}
+        onClose={() => setActive(null)}
+        onCancel={() => setActive(null)}
+        onClick={(e) => { if (e.target === dialogRef.current) closeModal(); }}
         aria-labelledby="launcher-modal-title"
         className="m-auto max-h-[86vh] w-[min(760px,94vw)] overflow-visible rounded-[28px] border-none bg-transparent p-0 backdrop:bg-black/60 backdrop:backdrop-blur-[10px]"
       >
@@ -267,7 +270,7 @@ export function ServicesLauncher() {
           <article className="relative max-h-[86vh] overflow-y-auto rounded-[28px] border border-line bg-[rgba(24,25,33,.92)] p-[clamp(30px,5vw,44px)] text-ink shadow-soft backdrop-blur-[30px]">
             <button
               type="button"
-              onClick={() => dialogRef.current?.close()}
+              onClick={closeModal}
               aria-label="Close dialog"
               className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-xl border border-line bg-white/[.06] text-xl text-ink hover:border-white/30 hover:bg-white/10"
             >
@@ -287,7 +290,7 @@ export function ServicesLauncher() {
             </div>
             <footer className="mt-8 flex flex-wrap items-center gap-3">
               <button type="button" onClick={() => discuss(active)} className="button-primary">Discuss this with us →</button>
-              <button type="button" onClick={() => dialogRef.current?.close()} className="button-secondary">Close</button>
+              <button type="button" onClick={closeModal} className="button-secondary">Close</button>
             </footer>
           </article>
         )}

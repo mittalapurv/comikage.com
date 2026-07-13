@@ -37,8 +37,9 @@ const sections: { title: string; body: React.ReactNode }[] = [
     title: "Contact forms and email",
     body: (
       <p>
-        This website currently uses email links rather than storing contact form submissions. Information you send by
-        email is handled through our email provider and used to respond to your enquiry.
+        When you submit the contact form, your message is delivered to us as an email — it is not stored in a website
+        database. Whether you use the form or write to us directly, the information is handled through our email
+        provider and used to respond to your enquiry.
       </p>
     )
   },
@@ -85,7 +86,7 @@ const sections: { title: string; body: React.ReactNode }[] = [
         For privacy questions or requests, email{" "}
         <Link
           href="/#contact"
-          className="font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#DAFF5A]"
+          className="font-semibold text-accent underline decoration-2 underline-offset-4 hover:text-[#FFC46B]"
         >
           hello@letscrud.com
         </Link>
